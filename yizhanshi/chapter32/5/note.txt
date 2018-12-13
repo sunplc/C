@@ -1,0 +1,4 @@
+Usage:
+./regex 'regex[a-z]*' < regex.c
+./regex 'return' < regex.c
+

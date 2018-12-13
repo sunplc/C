@@ -1,0 +1,5 @@
+统计文件中的空行数
+awk '/^ *$/ {x=x+1;} END {print x;}' textfile
+
+打印系统中的用户帐号列表
+awk 'BEGIN {FS=":"} {print $1;}' /etc/passwd

@@ -1,0 +1,8 @@
+匹配邮箱  
+egrep '[0-9a-zA-Z._-]+@[a-zA-Z0-9]+\.[0-9a-zA-Z]+' textfile
+
+匹配手机号 1开头的纯数字字符串，长度为11
+egrep '1[0-9]{10}' textfile
+
+匹配微信 6-12 个字符长度，包含字母数字和-
+egrep '[0-9a-zA-Z-]{6,12}' textfile

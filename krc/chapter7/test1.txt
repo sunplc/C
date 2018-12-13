@@ -1,0 +1,22 @@
+123456
+hello
+world
+someone
+table
+chair
+tower
+towel
+monitor
+display
+reputation
+mobile phone
+cellphone
+wallet
+kill
+son
+forest
+tree
+mountain
+river
+monkey
+test1.txt

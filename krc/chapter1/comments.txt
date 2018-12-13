@@ -1,0 +1,17 @@
+#include <stdio.h> // test
+
+/* Goodbye, world! */
+// /* abcd */    
+/* 1111 // 2222 */
+/ ********  */
+/* /* /* */ */
+/ / // asdf
+
+int main()
+{
+	/* one
+	   two
+	   three */
+	printf("Hello, world!\n");
+	return 0;  /* program over */
+}

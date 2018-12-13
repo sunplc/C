@@ -1,0 +1,26 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+
+#define name defn
+#define HASHSIZE 101
+#define BUFFSIZE 200
+
+#define MAX 1000
+#define MIN 1
+
+#define OUT 0
+#define IN 1
+
+
+int a = IN;
+int b = OUT;
+
+c = name;
+d = HASHSIZE
+e = defn
+f = MAX
+g = BUFFSIZE
+
+

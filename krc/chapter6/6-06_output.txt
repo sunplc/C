@@ -1,0 +1,10 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+int a = 1;
+int b = 0;
+c = defn;
+d = 101
+e = defn
+f = 1000
+g = 200

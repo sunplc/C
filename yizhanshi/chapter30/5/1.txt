@@ -1,0 +1,16 @@
+total 112
+-rwxr-xr-x 1 root root 13360 2017-06-03 03:00 simple_shell
+drwxr-xr-x 2 root root  4096 2017-06-03 03:00 .
+-rw-r--r-- 1 root root  2684 2017-06-03 03:00 simple_shell.c
+-rw-r--r-- 1 root root 12288 2017-06-03 03:00 .simple_shell.c.swp
+--w------t 1 root root    22 2017-06-03 02:58 2.txt
+-rw-r--r-- 1 root root    21 2017-06-03 01:00 1.txt
+-rw-r--r-- 1 root root   276 2017-06-02 21:56 test.c
+-rwxr-xr-x 1 root root  8768 2017-06-02 21:43 test
+-rwxr-xr-x 1 root root  8760 2017-06-02 03:01 get_argv
+-rw-r--r-- 1 root root   807 2017-06-02 03:01 get_argv.c
+-rw-r--r-- 1 root root   707 2017-06-02 02:11 dynamic_array.c
+-rwxr-xr-x 1 root root  8984 2017-06-02 02:05 dynamic_array
+-rwxr-xr-x 1 root root  8784 2017-06-02 01:49 test_chinese_input
+-rw-r--r-- 1 root root   306 2017-06-02 01:49 test_chinese_input.c
+drwxr-xr-x 7 root root  4096 2017-05-31 21:13 ..

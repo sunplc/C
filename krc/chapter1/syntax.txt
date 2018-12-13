@@ -1,0 +1,22 @@
+#include <stdio.h>
+
+/**	something here ((()
+ * yes yes yes {{{{}
+ * no no no ]]]
+ * ''' """
+ */
+
+// haha ( [ }
+// [[[[];
+
+int main(void)
+{
+	char c = 'M';
+	();
+	f(a, b, "xx \'\" x");
+	"00"0000\"
+
+	int i, arr[10];
+	printf("I don't know!\n");
+	return 0;
+}

@@ -1,0 +1,13 @@
+123456
+hello
+world
+something
+bottle
+battle
+broswer
+file
+system
+link
+symbol
+character
+test2.txt
