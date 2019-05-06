@@ -1,8 +1,11 @@
 #include <stdio.h>
 
+int g = 1;
+
 int main(void)
 {
     int sum = 0, i = 0;
+    static int s = 10;
     char input[5];
 
     scanf("%s", input);

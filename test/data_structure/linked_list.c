@@ -5,8 +5,8 @@
 	> Created Time: Thu 14 Jul 2016 09:04:41 PM PDT
  ************************************************************************/
 
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 typedef struct node {
     int val;

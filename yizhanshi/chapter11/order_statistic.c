@@ -52,6 +52,8 @@ int order_statistic(int start, int end, int k)
 		order_statistic(mid + 1, end, k);	
 	else
 		order_statistic(start, mid - 1, k);	
+
+    return -1;
 }
 
 // 打印数组
