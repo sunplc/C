@@ -10,6 +10,7 @@ void to_binary(unsigned long n)
     putchar('0' + r);
 }
 
+
 // 使用移位的方法，将int类型变量按照二进制形式打印出来
 void binary_print(int x)
 {

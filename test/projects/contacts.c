@@ -27,9 +27,10 @@ int main(int argc, char *argv[])
     int i;
     for (i = 0; i < len; i++) {
         if (strlen(contacts[i].name) > 0)
-        printf("%s %d-%d-%d %s %s\n", contacts[i].name, contacts[i].birthday.year,
-                contacts[i].birthday.month, contacts[i].birthday.day,
-                contacts[i].address, contacts[i].tel);
+        printf("%s %d-%d-%d %s %s\n",
+            contacts[i].name, contacts[i].birthday.year,
+            contacts[i].birthday.month, contacts[i].birthday.day,
+            contacts[i].address, contacts[i].tel);
     }
 
 	return 0;
