@@ -3,3 +3,13 @@ void perror_exit(char *str);
 pthread_t *make_thread(void *entry(void *), void *arg);
 void join_thread(pthread_t *tid);
 void exit_thread();
+
+typedef pthread_mutex_t Mutex;
+Mutex * make_mutex();
+void mutex_lock(Mutex *mutex);
+void mutex_unlock(Mutex *mutex);
+
+typedef pthread_cond_t Cond;
+Cond *make_cond();
+void cond_wait(Cond *cond, Mutex *mutex);
+void cond_signal(Cond *cond);

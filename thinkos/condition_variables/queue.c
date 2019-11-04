@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <unistd.h> // sleep()
+#include <pthread.h>
 
 #include "utils.h"
 
@@ -10,6 +11,9 @@ typedef struct {
     int length;
     int next_in;
     int next_out;
+    Mutex *mutex;
+    Cond *cond_nonfull;
+    Cond *cond_nonempty;
 } Queue;
 
 Queue *make_queue(int length)
@@ -19,6 +23,10 @@ Queue *make_queue(int length)
     queue->array = (int *)check_malloc(sizeof(int) * length);
     queue->next_in = 0;
     queue->next_out = 0;
+
+    queue->mutex = make_mutex();
+    queue->cond_nonfull = make_cond();
+    queue->cond_nonempty = make_cond();
 
     return queue;
 }
@@ -40,23 +48,37 @@ int queue_full(Queue *queue)
 
 void queue_push(Queue *queue, int value)
 {
-    if (queue_full(queue)) {
-        perror_exit("queue is full");
+    mutex_lock(queue->mutex);
+    while (queue_full(queue)) {
+        cond_wait(queue->cond_nonfull, queue->mutex);
     }
 
+    // 假如线程在此处被系统切换了，之后恢复再执行，
+    // 还是有极小的可能会出现插入错误的问题!
+    //
+    // 也就是说，不管是否使用条件变量，线程在获得互斥锁并且
+    // 还未释放时，是否有可能被操作系统切换上下文停止执行，
+    // 若可能发生此种情况，则可能会出现同步错误
     queue->array[queue->next_in] = value;
     queue->next_in = queue_incr(queue, queue->next_in);
+    mutex_unlock(queue->mutex);
+
+    cond_signal(queue->cond_nonempty);
 }
 
 int queue_pop(Queue *queue)
 {
+    mutex_lock(queue->mutex);
     if (queue_empty(queue)) {
-        perror_exit("queue is empty");
+        cond_wait(queue->cond_nonempty, queue->mutex);
     }
 
     int value = queue->array[queue->next_out];
     queue->next_out = queue_incr(queue, queue->next_out);
 
+    mutex_unlock(queue->mutex);
+
+    cond_signal(queue->cond_nonfull);
     return value;
 }
 
@@ -158,10 +180,10 @@ void *consumer_entry(void *arg)
 int main(int argc, char *argv[])
 {
     //queue_test();
-    Shared *shared = make_shared(10000);
 
-    pthread_t *tid1= make_thread(producer_entry, shared);
-    sleep(1);
+    Shared *shared = make_shared(6000);
+
+    pthread_t *tid1 = make_thread(producer_entry, shared);
     pthread_t *tid2 = make_thread(consumer_entry, shared);
 
     join_thread(tid1);
