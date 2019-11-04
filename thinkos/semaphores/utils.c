@@ -66,6 +66,42 @@ void cond_signal(Cond *cond)
     }
 }
 
+Sem *make_semaphore(int counter)
+{
+    if (counter < 0) {
+        perror_exit("make_semaphore counter less than zero");
+    }
+
+    Sem *sem = (Sem *)check_malloc(sizeof(Sem));
+    sem->counter = counter;
+    sem->counter_mutex = make_mutex();
+    sem->cond = make_cond();
+
+    return sem;
+}
+
+void semaphore_wait(Sem *sem)
+{
+    mutex_lock(sem->counter_mutex);
+    while (sem->counter <= 0) {
+        cond_wait(sem->cond, sem->counter_mutex);
+    }
+
+    --sem->counter;
+    //printf("semaphore_wait counter=%d\n", sem->counter);
+    mutex_unlock(sem->counter_mutex);
+}
+
+void semaphore_signal(Sem *sem)
+{
+    mutex_lock(sem->counter_mutex);
+    ++sem->counter;
+    //printf("semaphore_signal counter=%d\n", sem->counter);
+    mutex_unlock(sem->counter_mutex);
+
+    cond_signal(sem->cond);
+}
+
 pthread_t *make_thread(void *(*entry)(void *), void *arg)
 {
     pthread_t *tid = (pthread_t *)check_malloc(sizeof(pthread_t));

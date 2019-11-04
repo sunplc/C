@@ -13,3 +13,15 @@ typedef pthread_cond_t Cond;
 Cond *make_cond();
 void cond_wait(Cond *cond, Mutex *mutex);
 void cond_signal(Cond *cond);
+
+typedef struct {
+    int counter;
+    Mutex *counter_mutex;
+    Cond *cond;
+} Sem;
+
+Sem *make_semaphore(int counter);
+
+void semaphore_wait(Sem *sem);
+
+void semaphore_signal(Sem *sem);
