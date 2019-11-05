@@ -83,13 +83,17 @@ Shared *make_shared(int length)
     return shared;
 }
 
+int p_count = 0;
+int c_count = 0;
+
 void *producer_entry(void *arg)
 {
     Shared *shared = (Shared *) arg;
     int i;
     for (i = 0; i < shared->queue->length - 1; i++) {
-        printf("adding item %d\n", i);
+        //printf("adding item %d\n", i);
         queue_push(shared->queue, i);
+        ++p_count;
     }
 
     exit_thread();
@@ -102,7 +106,8 @@ void *consumer_entry(void *arg)
     int i, item;
     for (i = 0; i < shared->queue->length - 1; i++) {
         item = queue_pop(shared->queue);
-        printf("consuming item %d\n", item);
+        ++c_count;
+        //printf("consuming item %d\n", item);
     }
 
     exit_thread();
@@ -118,6 +123,8 @@ int main(int argc, char *argv[])
 
     join_thread(t1);
     join_thread(t2);
+
+    printf("product times: %d, consume times: %d\n", p_count, c_count);
 
     return 0;
 }

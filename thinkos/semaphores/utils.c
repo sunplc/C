@@ -80,6 +80,34 @@ Sem *make_semaphore(int counter)
     return sem;
 }
 
+/* 作者的实现方法
+void semaphore_wait_AUTHOR(Semaphore *semaphore)
+{
+  mutex_lock(semaphore->mutex);
+  semaphore->value--;
+
+  if (semaphore->value < 0) {
+    do {
+      cond_wait(semaphore->cond, semaphore->mutex);
+    } while (semaphore->wakeups < 1);
+    semaphore->wakeups--;
+  }
+  mutex_unlock(semaphore->mutex);
+}
+
+void semaphore_signal_AUTHOR(Semaphore *semaphore)
+{
+  mutex_lock(semaphore->mutex);
+  semaphore->value++;
+
+  if (semaphore->value <= 0) {
+    semaphore->wakeups++;
+    cond_signal(semaphore->cond);
+  }
+  mutex_unlock(semaphore->mutex);
+}
+*/
+
 void semaphore_wait(Sem *sem)
 {
     mutex_lock(sem->counter_mutex);
@@ -88,7 +116,6 @@ void semaphore_wait(Sem *sem)
     }
 
     --sem->counter;
-    //printf("semaphore_wait counter=%d\n", sem->counter);
     mutex_unlock(sem->counter_mutex);
 }
 
@@ -96,10 +123,12 @@ void semaphore_signal(Sem *sem)
 {
     mutex_lock(sem->counter_mutex);
     ++sem->counter;
-    //printf("semaphore_signal counter=%d\n", sem->counter);
-    mutex_unlock(sem->counter_mutex);
 
-    cond_signal(sem->cond);
+    if (sem->counter <= 1) {
+        cond_signal(sem->cond);
+    }
+
+    mutex_unlock(sem->counter_mutex);
 }
 
 pthread_t *make_thread(void *(*entry)(void *), void *arg)
