@@ -16,6 +16,7 @@ void cond_signal(Cond *cond);
 
 typedef struct {
     int counter;
+    int wakeups;
     Mutex *counter_mutex;
     Cond *cond;
 } Sem;
