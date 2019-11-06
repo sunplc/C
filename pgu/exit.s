@@ -1,6 +1,6 @@
-.section .data
+#.section .data
 
-.section .text
+#.section .text
 
 .globl _start
 
