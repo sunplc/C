@@ -1,26 +1,33 @@
-# program purpose: find the maximum number of the list
+# PURPOSE: find the maximum number of the list
+
 # %edi is index register
 # %eax and %ebx is general purpose register, and %ebx holds
 # exit status code, %eax holds system call number
 
 .section .data
 data_items:
-    .long 23,12,2,123,155,23,78,238,1,0
+    .long 123,12,4,123,155,23,78,234,17,10
 
 .globl _start
 
 .section .text
 _start:
     movl $0, %edi
-    movl (data_items), %eax
-    movl %eax, %ebx
 
     start_loop:
-    cmpl $0, %eax
+
+    # compare %edi with the length of list
+    cmpl $10, %edi
     je end_loop
 
-    incl %edi
     movl data_items(, %edi, 4), %eax
+
+    cmpl $0, %edi
+    jne check_index_is_zero
+    movl %eax, %ebx
+    check_index_is_zero:
+
+    incl %edi
 
     cmpl %ebx, %eax
     jle start_loop
@@ -32,3 +39,4 @@ _start:
 
     movl $1, %eax
     int $0x80
+
