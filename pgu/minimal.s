@@ -1,3 +1,5 @@
+# 32bit version, ran on 64bit without problem
+
 # PURPOSE: find the minimal number of the list
 
 # %edi is index register
