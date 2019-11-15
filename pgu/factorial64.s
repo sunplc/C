@@ -7,7 +7,7 @@
 
 _start:
 
-    movq $4, %rdi # mov first argument
+    movq $4, %rdi # 保存第一个参数
 
     call factorial
 
@@ -21,7 +21,7 @@ factorial:
     pushq %rbp
     movq %rsp, %rbp
 
-    cmp $1, %rdi
+    cmp $1, %rdi    # 若参数等于1，则停止递归，返回1
     jg continue_mark
     movq $1, %rax
     jmp func_end
