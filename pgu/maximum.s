@@ -1,4 +1,4 @@
-# 32bit version, ran on 64bit without problem
+# 32bit version, ran on 64bit system without problem
 
 # PURPOSE: find the maximum number of the list
 
