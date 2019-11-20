@@ -17,7 +17,10 @@ _start:
     # 直接使用mov操作时，会获得其首个元素的值,
     # 而使用lea操作时，会获得其地址，所以list1
     # 类似是一个寄存器
+
     leaq list1, %rdi
+    # movq $list1, %rdi # 和上一行是等价的
+
     movq $7, %rsi
     call maximum
 
