@@ -1,0 +1,86 @@
+
+toupper64.o:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000000000 <_start>:
+   0:	48 89 e5             	mov    %rsp,%rbp
+   3:	48 83 ec 10          	sub    $0x10,%rsp
+
+0000000000000007 <open_fd_in>:
+   7:	48 c7 c0 02 00 00 00 	mov    $0x2,%rax
+   e:	48 8b 7d 10          	mov    0x10(%rbp),%rdi
+  12:	48 c7 c6 00 00 00 00 	mov    $0x0,%rsi
+  19:	48 c7 c2 b6 01 00 00 	mov    $0x1b6,%rdx
+  20:	0f 05                	syscall 
+
+0000000000000022 <store_fd_in>:
+  22:	48 89 45 f8          	mov    %rax,-0x8(%rbp)
+
+0000000000000026 <open_fd_out>:
+  26:	48 c7 c0 02 00 00 00 	mov    $0x2,%rax
+  2d:	48 8b 7d 18          	mov    0x18(%rbp),%rdi
+  31:	48 c7 c6 41 06 00 00 	mov    $0x641,%rsi
+  38:	48 c7 c2 b6 01 00 00 	mov    $0x1b6,%rdx
+  3f:	0f 05                	syscall 
+
+0000000000000041 <store_fd_out>:
+  41:	48 89 45 f0          	mov    %rax,-0x10(%rbp)
+
+0000000000000045 <read_loop_begin>:
+  45:	48 c7 c0 00 00 00 00 	mov    $0x0,%rax
+  4c:	48 8b 7d f8          	mov    -0x8(%rbp),%rdi
+  50:	48 c7 c6 00 00 00 00 	mov    $0x0,%rsi
+  57:	48 c7 c2 f4 01 00 00 	mov    $0x1f4,%rdx
+  5e:	0f 05                	syscall 
+  60:	48 83 f8 00          	cmp    $0x0,%rax
+  64:	7e 2a                	jle    90 <end_loop>
+
+0000000000000066 <continue_read_loop>:
+  66:	48 c7 c7 00 00 00 00 	mov    $0x0,%rdi
+  6d:	48 89 c6             	mov    %rax,%rsi
+  70:	50                   	push   %rax
+  71:	e8 44 00 00 00       	callq  ba <convert_to_upper>
+  76:	58                   	pop    %rax
+  77:	48 89 c2             	mov    %rax,%rdx
+  7a:	48 c7 c0 01 00 00 00 	mov    $0x1,%rax
+  81:	48 8b 7d f0          	mov    -0x10(%rbp),%rdi
+  85:	48 c7 c6 00 00 00 00 	mov    $0x0,%rsi
+  8c:	0f 05                	syscall 
+  8e:	eb b5                	jmp    45 <read_loop_begin>
+
+0000000000000090 <end_loop>:
+  90:	48 c7 c0 03 00 00 00 	mov    $0x3,%rax
+  97:	48 8b 7d f0          	mov    -0x10(%rbp),%rdi
+  9b:	0f 05                	syscall 
+  9d:	48 c7 c0 03 00 00 00 	mov    $0x3,%rax
+  a4:	48 8b 7d f8          	mov    -0x8(%rbp),%rdi
+  a8:	0f 05                	syscall 
+  aa:	48 c7 c0 3c 00 00 00 	mov    $0x3c,%rax
+  b1:	48 c7 c7 00 00 00 00 	mov    $0x0,%rdi
+  b8:	0f 05                	syscall 
+
+00000000000000ba <convert_to_upper>:
+  ba:	48 89 f8             	mov    %rdi,%rax
+  bd:	48 89 f3             	mov    %rsi,%rbx
+  c0:	48 c7 c7 00 00 00 00 	mov    $0x0,%rdi
+  c7:	48 83 fb 00          	cmp    $0x0,%rbx
+  cb:	74 1b                	je     e8 <end_convert_loop>
+
+00000000000000cd <convert_loop>:
+  cd:	8a 0c 38             	mov    (%rax,%rdi,1),%cl
+  d0:	80 f9 61             	cmp    $0x61,%cl
+  d3:	7c 0b                	jl     e0 <next_byte>
+  d5:	80 f9 7a             	cmp    $0x7a,%cl
+  d8:	7f 06                	jg     e0 <next_byte>
+  da:	80 c1 e0             	add    $0xe0,%cl
+  dd:	88 0c 38             	mov    %cl,(%rax,%rdi,1)
+
+00000000000000e0 <next_byte>:
+  e0:	48 ff c7             	inc    %rdi
+  e3:	48 39 fb             	cmp    %rdi,%rbx
+  e6:	75 e5                	jne    cd <convert_loop>
+
+00000000000000e8 <end_convert_loop>:
+  e8:	c3                   	retq   
