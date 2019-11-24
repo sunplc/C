@@ -1,3 +1,5 @@
+# x86_64 version of the book's exercises
+
 # 计算一个整数的平方的函数
 
 # square函数没用到stack, 所以没有操作 rbp 和 rsp，

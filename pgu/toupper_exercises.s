@@ -1,21 +1,25 @@
-# x86_64 version of the book's example
+# x86_64 version of the book's example and exercises
+
+# EXERCISE: Modify the toupper program so that it reads from 
+# STDIN and writes to STDOUT instead of using the files on 
+# the command-line
+
+# EXERCISE: Change the size of the buffer
+
+# EXERCISE: Rewrite the program so that it uses storage in 
+# the .bss section rather than the stack to store the file
+# descriptors
+
+# EXERCISE: Make the program able to either operate on 
+# command-line arguments or use STDIN or STDOUT based
+# on the number of command-line arguments specified by ARGC.
+
+# NOTE:
 # 1) use syscall instruction, instead of int instruction
 # 2) use eightbyte register and instruction ,
 #       instead of fourbyte register
 # 3) use register to hold function arguments, instead of stack
 
-# PURPOSE: This program converts an input file
-# to an output file with all letters
-# converted to uppercase.
-#
-# PROCESSING: 1) Open the input file
-#   2) Open the output file
-#   4) While we’re not at the end of the input file
-#       a) read part of file into our memory buffer
-#       b) go through each byte of memory
-#       if the byte is a lower-case letter,
-#       convert it to uppercase
-#       c) write the memory buffer to output file
 
 .section .data
 
@@ -35,6 +39,8 @@
 # in "Counting Like a Computer"
     .equ O_RDONLY, 0
     .equ O_CREAT_WRONLY_TRUNC, 03101
+    # used for syscall error check, in case of file not exist
+    .equ O_WRONLY_TRUNC, 03001
 
 # standard file descriptors
     .equ STDIN, 0
@@ -48,6 +54,11 @@
     # hit the end of the file
     .equ NUMBER_ARGUMENTS, 2
 
+# error message for print to STDOUT
+    errmsg:
+    .ascii "\nSyscall error, got an negative return value!\n"
+    .equ ERRMSG_LEN, 46
+
 .section .bss
 
 # Buffer - this is where the data is loaded into
@@ -55,8 +66,12 @@
 # into the output file. This should
 # never exceed 16,000 for various
 # reasons.
-    .equ BUFFER_SIZE, 500
+    .equ BUFFER_SIZE, 5
     .lcomm BUFFER_DATA, BUFFER_SIZE
+
+    .equ FD_SIZE, 8
+    .lcomm BSS_FD_IN, FD_SIZE
+    .lcomm BSS_FD_OUT, FD_SIZE
 
 .section .text
 
@@ -74,23 +89,25 @@ _start:
     ### INITIALIZE PROGRAM ###
     # save the stack pointer
     movq %rsp, %rbp
-    # Allocate space for our file descriptors
-    # on the stack
-    subq $ST_SIZE_RESERVE, %rsp
 
-open_files:
+    # check to decide use command-line argument or use stdin/stdout file
+    # as input/output file.
+    cmpq $3, ST_ARGC(%rbp)
+    jne open_files_from_stdio
+
+open_files_from_argv:
 
 open_fd_in:
     ### OPEN INPUT FILE ###
     movq $SYS_OPEN, %rax # open syscall
-    movq ST_ARGV_1(%rbp), %rdi # input filename into %ebx
+    movq ST_ARGV_1(%rbp), %rdi # input filename into %rdi
     movq $O_RDONLY, %rsi # read-only flag
     movq $0666, %rdx # this doesn’t really matter for reading
     syscall # call linux kernel on x86_64
 
 store_fd_in:
     # save the given file descriptor
-    movq %rax, ST_FD_IN(%rbp)
+    movq %rax, BSS_FD_IN
 
 open_fd_out:
     ###OPEN OUTPUT FILE###
@@ -100,15 +117,26 @@ open_fd_out:
     movq $0666, %rdx # mode for new file (if it’s created)
     syscall # call linux kernel on x86_64
 
+    pushq %rax
+    call check_error # check syscall return value
+    popq %rax
+
 store_fd_out:
     #store the file descriptor here
-    movq %rax, ST_FD_OUT(%rbp)
+    movq %rax, BSS_FD_OUT
+
+    # jump over the "open_files_from_stdio" section
+    jmp read_loop_begin
+
+open_files_from_stdio:
+    movq $STDIN, BSS_FD_IN
+    movq $STDOUT, BSS_FD_OUT
 
 ### BEGIN MAIN LOOP###
 read_loop_begin:
     ### READ IN A BLOCK FROM THE INPUT FILE###
     movq $SYS_READ, %rax
-    movq ST_FD_IN(%rbp), %rdi # get the input file descriptor
+    movq BSS_FD_IN, %rdi # get the input file descriptor
     movq $BUFFER_DATA, %rsi # the location to read into
     movq $BUFFER_SIZE, %rdx # the size of the buffer
     # Size of buffer read is returned in %eax
@@ -132,7 +160,7 @@ continue_read_loop:
     movq %rax, %rdx # size of the buffer,
                     # must do this before save value to rax
     movq $SYS_WRITE, %rax
-    movq ST_FD_OUT(%rbp), %rdi # file to use
+    movq BSS_FD_OUT, %rdi # file to use
     movq $BUFFER_DATA, %rsi # location of the buffer
     syscall
 
@@ -145,11 +173,11 @@ end_loop:
     # on these, because error conditions
     # don’t signify anything special here
     movq $SYS_CLOSE, %rax
-    movq ST_FD_OUT(%rbp), %rdi
+    movq BSS_FD_IN, %rdi
     syscall
 
     movq $SYS_CLOSE, %rax
-    movq ST_FD_IN(%rbp), %rdi
+    movq BSS_FD_OUT, %rdi
     syscall
 
     ### EXIT ###
@@ -219,5 +247,19 @@ next_byte:
 
 end_convert_loop:
     # no return value, just leave
+    ret
+
+# 检查 %rax 为负值，则输出一条错误信息
+check_error:
+    cmpq $0, %rax
+    jge function_end
+
+    movq $SYS_WRITE, %rax
+    movq $STDOUT, %rdi # file to use
+    movq $errmsg, %rsi # location of the buffer
+    movq $ERRMSG_LEN, %rdx # size of the buffer,
+    syscall
+
+    function_end:
     ret
 

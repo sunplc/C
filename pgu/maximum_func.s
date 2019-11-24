@@ -1,3 +1,5 @@
+# x86_64 version of the book's exercises
+
 .section .data
 list1:
 .quad 23,211,54,234,66, 0, 43

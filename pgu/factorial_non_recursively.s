@@ -1,3 +1,5 @@
+# x86_64 version of the book's exercises
+
 .section .text
 
 .globl _start

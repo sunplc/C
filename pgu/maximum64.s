@@ -1,3 +1,4 @@
+# x86_64 version of the book's exercises
 
 # PURPOSE:  This program finds the maximum number of a
 #           set of data items.
