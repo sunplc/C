@@ -14,6 +14,10 @@
 # command-line arguments or use STDIN or STDOUT based
 # on the number of command-line arguments specified by ARGC.
 
+# EXERCISE: Modify the program so that it checks the 
+# results of each system call, and prints out an 
+# error message to STDOUT when it occurs.
+
 # NOTE:
 # 1) use syscall instruction, instead of int instruction
 # 2) use eightbyte register and instruction ,
