@@ -2,7 +2,7 @@
 
 as factorial_func.s -o factorial_func.o
 
-ld -fPIC -shared factorial_func.o -o libfactorial.so
+ld -shared factorial_func.o -o libfactorial.so
 
 as factorial.s -o factorial.o
 

@@ -1,5 +1,7 @@
 
-## Programming from ground up 64位版 示例和练习答案
+# Programming from ground up 示例和练习答案 
+
+## 在 x86-64 GNU/Linux 平台上完成
 
 - 使用 uname -m 查看系统架构是32位或64位
 
