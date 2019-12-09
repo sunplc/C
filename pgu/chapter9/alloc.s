@@ -183,20 +183,21 @@ allocate_here:              # if we’ve made it here,
     subq %rdi, %rcx
     cmpq $HEADER_SIZE, %rcx
 
-    pushq %rdi
-    pushq %rsi
-    pushq %rax
-    pushq %rcx
+    # Print some register for debug 
+    # pushq %rdi
+    # pushq %rsi
+    # pushq %rax
+    # pushq %rcx
 
-    movq %rdi, %rsi
-    movq $debug, %rdi
-    mov $2, %al
-    call printf
+    # movq %rdi, %rsi
+    # movq $debug, %rdi
+    # mov $2, %al
+    # call printf
 
-    popq %rcx
-    popq %rax
-    popq %rsi
-    popq %rdi
+    # popq %rcx
+    # popq %rax
+    # popq %rsi
+    # popq %rdi
 
     jle skip_save_remainder
 
