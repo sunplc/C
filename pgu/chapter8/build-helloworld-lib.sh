@@ -1,4 +1,7 @@
 
+LD_LIBRARY_PATH=.
+export LD_LIBRARY_PATH
+
 as -64 helloworld-lib.s -o helloworld-lib.o
 
 ld -o helloworld-lib -m elf_x86_64 \
