@@ -1,4 +1,12 @@
-# use command 'strace ./fully_use' to check if 
+# EXERCISE:
+# Modify the memory manager so that if the 
+# requested size of memory is smaller than
+# the region chosen, it will break up the region
+# into multiple parts. Be sure to take into
+# account the size of the new header record when
+# you do this.
+
+# Use command 'strace ./fully_use' to check if 
 # allocator fully used the heap memory chunk
 
 
