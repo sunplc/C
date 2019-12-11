@@ -25,10 +25,13 @@
 # This points to the beginning of the memory we are managing
 heap_begin:
     .quad 0
+
 # This points to one location past the memory we are managing
 current_break:
     .quad 0
-    debug:
+
+# debug string
+debug:
     .ascii "rs:%d\n\0"
 
 ######STRUCTURE INFORMATION####
