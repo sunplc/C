@@ -1,43 +1,48 @@
 #include <stdio.h>
-#include <limits.h>
 
-typedef unsigned char* byte_pointer;
+// Here is very strange, when there is no 'unsigned'
+typedef unsigned char *byte_pointer;
 
 void show_bytes(byte_pointer p, int len) {
     p = p + len - 1;
-    printf("0x");
+    printf("0x ");
     while (len-- > 0) {
-        printf("%.2x", *p--);
+        printf("%.2x ", *p--);
     }
     printf("\n");
 }
 
-int main(int argc, char* argv[]) {
+void show_int(int a)
+{
+    show_bytes((byte_pointer) &a, sizeof(int));
+}
 
-    // INT_MAX + 1 等于 INT_MIN
-    // INT_MIN - 1 等于 INT_MAX
-    int i = INT_MAX + 1;
+void show_float(float a)
+{
+    show_bytes((byte_pointer) &a, sizeof(float));
+}
 
-    printf("INT_MAX + 1 = %d:\t", i);
-    show_bytes((byte_pointer) &i, sizeof(i));
+void show_pointer(void *a)
+{
+    show_bytes((byte_pointer) &a, sizeof(void *));
+}
 
-    i = INT_MIN - 1;
-    printf("INT_MIN - 1 = %d:\t", i);
-    show_bytes((byte_pointer) &i, sizeof(i));
+int main(int argc, char *argv[])
+{
+    int val = 12345;
+    int ival = val;
+    float fval = (float) val;
+    int *ip = &val;
+    show_int(ival);
+    show_float(fval);
+    show_pointer(ip);
 
-    short sx = -12345;
-    unsigned short usx = sx;
-    int x = sx;
-    unsigned ux = usx;
+    //float s = 3510593;
+    char *s = "abcdef";
+    byte_pointer p = (byte_pointer) s;
 
-    printf("sx = %d:\t", sx);
-    show_bytes((byte_pointer) &sx, sizeof(short));
-    printf("sx = %d:\t", usx);
-    show_bytes((byte_pointer) &usx, sizeof(unsigned short));
-    printf("sx = %d:\t", x);
-    show_bytes((byte_pointer) &x, sizeof(int));
-    printf("sx = %d:\t", ux);
-    show_bytes((byte_pointer) &ux, sizeof(unsigned));
+    show_bytes(p, 6);
 
+	return 0;
 }
 
