@@ -1,0 +1,57 @@
+
+32-bit Two's complement
+0x1b8		00000001 10101000 1*2^8 + 11*2^4 + 8 = 256 + 176 + 8 = 440
+0x14		1*2^4 + 4 = 20
+0xfffffe58	-0x1a8 = -256 + -160 + -8 = -424
+0xfffffe74 	-0x18c = -256 + -128 + -12 = -396
+0x44		4*16 + 4 = 68
+0xfffffec8	-0x138 = -256 + -48 + -8 = -312
+0x10		16
+0xc 		12
+0xfffffeec	-0x114 = -256 + -16 + -4 = -276
+0x20		32
+
+2.19:
+-8	1000	8
+-3	1101	13
+-2	1110	14
+-1	1111	15
+0	0000	0
+5	0101	5
+
+2.21:
+unsigned	1
+int 		1
+unsigned	0
+int 		1
+unsigned	0
+
+2.23:
+fun1(w)			fun2(2)
+00000076		00000076
+00000021		00000021
+000000c9		ffffffc9
+00000087		ffffff87
+
+fun1() performs logical left shift for 3 bytes and logical right shift for 3 bytes.
+
+fun2() performs type cast from unsigned to int, performs logical left shift for 3 bytes and arithmetical right shift for 3 bytes.
+
+2.24:
+0	0
+2	2
+1	-7->9->1
+3	-5->11->3
+7	-1->15->7
+
+2.25:
+for variable "length" have data type unsigned, subtract "length" with 1, cause a overflow, make the "length" equals 0xFFFFFFFF, that is 4294967295 in decimal.
+
+2.72:
+A: 
+when operate with an unsigned and an int, the C compiler
+will see the result as an unsigned type.
+
+B:
+if (maxbytes - (int)sizeof(val) >= 0)
+
