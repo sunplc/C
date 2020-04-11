@@ -55,3 +55,9 @@ will see the result as an unsigned type.
 B:
 if (maxbytes - (int)sizeof(val) >= 0)
 
+2.76:
+A: (x << 4) + x
+B: -(x << 3) + x
+C: (x << 6) - (x << 2)
+D: -(x << 7) + (x << 4)
+
