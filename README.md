@@ -6,7 +6,7 @@
 | yizhanshi | Linux C 编程一站式学习 |
 | thinkos | Think OS , A Brief Introduction to Operating Systems, Version 0.8.1 |
 | pgu | Programming from ground up |
-| csapp | Computer System: A Programmer's Perspective, Third Edition |
+| csapp | Computer System: A Programmer's Perspective, Second Edition |
 
 # Development Environment:
 Linux vim gcc
