@@ -25,7 +25,7 @@ int main(int argc, char* argv[])
 
     int y, k;
 
-    y = 0b101; k = 3;
+    y = 0b100; k = 3;
     infinite_string_value(y, k);
 
     y = 0b0110; k = 4;
