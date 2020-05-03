@@ -33,7 +33,7 @@ int main(int argc, char* argv[])
     // 11.001001001...
     float f = 22/7.0;
     printf("22/7 = %f %f\n", f, f);
-    show_float(f);
+    show_float(0.7);
 
     return 0;
 }

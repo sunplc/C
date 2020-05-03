@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
 
     float f1, f2;
     f1 = 1.0, f2 = 2.0;
-    printf("comparation: %d\n", f2 == -(-f2));
+    printf("comparation: %d\n", f1 == -(-f1));
 
     f2 *= 121424234243123123;
     f2 *= 121424234243123123;
