@@ -1,4 +1,7 @@
 
+Solutions to Problem:
+
+2.18:
 32-bit Two's complement
 0x1b8		00000001 10101000 1*2^8 + 11*2^4 + 8 = 256 + 176 + 8 = 440
 0x14		1*2^4 + 4 = 20

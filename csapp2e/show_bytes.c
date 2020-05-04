@@ -3,6 +3,7 @@
 // Here is very strange, when there is no 'unsigned'
 typedef unsigned char *byte_pointer;
 
+/* show bytes from the highest address to lowest address */
 void show_bytes(byte_pointer p, int len) {
     p = p + len - 1;
     printf("0x ");

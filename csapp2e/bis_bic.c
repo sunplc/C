@@ -45,8 +45,7 @@ int bool_and(int x, int y)
 
 int bool_xor(int x, int y)
 {
-    return bic( bis(x, y),
-        bic(x, bic(0xffffffff, y)) );
+    return bic( bis(x, y), bic(x, bic(0xffffffff, y)) );
 }
 
 int main(int argc, char *argv[])
