@@ -61,7 +61,6 @@ float_bits float_i2f(int i)
 
     /*
      * Count how many bits does frac occupied, except left hand zero bits,
-     * not equals 0
      */
     unsigned digits = 0, tmp = frac;
     for (digits = 0; digits <= 32; digits++) {
@@ -121,6 +120,8 @@ int main(int argc, char* argv[])
     binary_print(f);
     float fv = u2f(f);
     printf("%.30f\n", fv);
+
+    puts("");
 
     /* Check my result with machine's floating-point operation */
     puts("Check result:");
