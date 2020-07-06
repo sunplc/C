@@ -64,3 +64,55 @@ B: -(x << 3) + x
 C: (x << 6) - (x << 2)
 D: -(x << 7) + (x << 4)
 
+3.1:
+0x100
+0xAB
+0x108
+0xFF
+0xAB
+0x11
+0x13
+0xFF
+0x11
+
+3.2:
+1 movl %eax, (%esp)
+2 movw (%eax), %dx
+3 movb $0xFF, %bl
+4 movb (%esp,%edx,4), %dh
+5 pushb $0xFF
+6 movw %dx, (%eax)
+7 popl %edi
+
+3.3:
+1 movb $0xF, (%bl)		# %bl can not be pointer, too short
+2 movl %ax, (%esp) 		# should use movw
+3 movw (%eax),4(%esp)	# two oprands can not be two address
+4 movb %ah,%sh			# no register named %sh
+5 movl %eax,$0x123		# can not mov the value of %eax to an Immediate value
+6 movl %eax,%dx			# should use movw
+7 movb %si, 8(%ebp)		# should use movw
+
+3.4:
+movsbl %al (%edx)
+movsbl %al (%edx)
+movzbl %al (%edx)
+movb %al (%edx)
+movb %al (%edx)
+movl %eax (%edx)
+
+3.5:
+void decode1(int *xp, int *yp, int *zp)
+{
+    int b = *yp
+    int s = *zp
+    int a = *xp
+
+    *yp = a;
+    *zp = b;
+    *xp = s;
+}
+
+
+读到第 211 页，先跳过第二章
+
