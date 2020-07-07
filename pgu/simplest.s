@@ -8,6 +8,12 @@
 
 _start:
 
-    movl $123, %ebx
-    movl $1, %eax
-    int $0x80
+    # 使用 int 退出程序
+    # movl $1, %eax
+    # movl $123, %ebx
+    # int $0x80
+
+    # 使用 syscall 退出程序
+    movl $60, %eax
+    movl $123, %edi
+    syscall
