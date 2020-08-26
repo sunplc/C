@@ -20,6 +20,7 @@ void show_float(float a)
 int main(int argc, char* argv[])
 {
     float f = 1e10;
+
     printf("f = %f\n", f);
     show_float(f);
 
@@ -39,7 +40,9 @@ int main(int argc, char* argv[])
     printf("f2 = %f\n", f2);
 
     f2 = 1e20 * 1e20;
-    printf("%f\n", -(f2 - f2));
+    printf("f2 = %f\n", f2);
+    printf("%f\n", (f2 + f2));
+    printf("%f\n", (f2 - f2));
 
     l = 0x80000000;
     f2 =  * ((float *) &l);
