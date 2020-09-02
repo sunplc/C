@@ -114,5 +114,25 @@ void decode1(int *xp, int *yp, int *zp)
 }
 
 
-读到第 211 页，先跳过第二章
+3.6:
+x+6
+x+y
+x+(y*4)
+x+(y*8)+7
+(y*4)+10
+x+(y*2)+9
+
+3.7:
+0x100   0x100
+0x104   0xFD
+0x10c   0x110
+0x108   0x14
+%ecx    0x0
+%eax    0xFD
+
+3.8:
+SHL %eax, $2
+SAR %eax, %ecx
+
+读到第 216 页，先跳过第二章
 
