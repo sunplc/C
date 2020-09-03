@@ -131,8 +131,20 @@ x+(y*2)+9
 %eax    0xFD
 
 3.8:
-SHL %eax, $2
-SAR %eax, %ecx
+SHL $2, %eax 
+SAR %ecx, %eax
+
+3.9:
+t1 = x ^ y;
+t2 = t1 >> 3;
+t3 = ~t2;
+t4 = t3 - z;
+
+3.10:
+A: set all bit of register as zero
+B: movl $0, %edx
+C: XOR use only one register, that is 4 bytes; MOV use one register and one word
+in memory, totally use 8 bytes;
 
 读到第 216 页，先跳过第二章
 
