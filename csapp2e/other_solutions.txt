@@ -146,5 +146,43 @@ B: movl $0, %edx
 C: XOR use only one register, that is 4 bytes; MOV use one register and one word
 in memory, totally use 8 bytes;
 
-读到第 216 页，先跳过第二章
+3.11:
+movl 8(%ebp), %eax  // Put x to %eax
+xorl %edx, %edx     // Set %edx to 0
+divl 12(%ebp)       // Divide by y
+movl %eax, 4(%esp)  // Store x / y
+movl %edx, (%esp)   // Store x % y
+
+3.12:
+The data type of num_t is:
+struct {
+    int a, 
+    int b
+}
+
+algorithm:
+function test(dest, x, y) {
+    b = x * b;
+    long la = x * a;
+    long lb = b;
+    lb = lb << 32;
+    la = la + lb;
+    return la;
+}
+
+
+3.13:
+int     a < b
+short   a >= b
+unsigned char  a < b
+int a != b
+
+3.14:
+int     a != 0
+short   a == 0
+char    a > 0
+unsigned short  a > 0
+
+
+读到第 227 页，先跳过第二章
 
