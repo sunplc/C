@@ -183,6 +183,96 @@ short   a == 0
 char    a > 0
 unsigned short  a > 0
 
+3.15:
+A: 8048291 + 05 = 8048296
+B: 8048359 + e7 = 8048440
+C: 8048391 - 12 = 804837f
+D: Two's complement form ffffffe0 is decimal number 32,  80482c4 + 32 = 80482f6
+E: ff 25 fc 9f 04 08, 0xff25 is the instruction jmp*, 0x8049ffc is the memory address which stored the jump target address
 
-读到第 227 页，先跳过第二章
+3.16:
+A:
+void cond(int a, int *p) {
+    if (p == 0)
+        goto done;
+
+    if (a <= 0)
+        goto done;
+
+    *p += a;
+
+    done:
+}
+
+B: Because of C code's conditional statement has two child statment with AND
+logical condition, it is two condition
+
+3.17:
+A:
+gotodiff(int x, int y) {
+    int result;
+    if (x < y)
+        goto true;
+    result = x - y;
+    goto done;
+true:
+    result = y - x;
+done:
+    return result;
+}
+
+B:
+The reson is Less operation , less instruction, less time, such as if (!test-expr) is one
+more operation than if (test-expr).
+
+3.18:
+
+int test(int x, int y) {
+    int val = x * y;
+    if (x >= -3) {
+        if (x > 2) {
+            x = y - x;
+        } else {
+            x = y ^ x;
+        }
+    } else if (x <= y)
+        val = x + y;
+}
+
+3.20:
+
+int dw_loop(int x, int y, int n) {
+    do {
+        x += n;             // body-statement start
+        y *= n;
+        n--;                // body-statement end
+    } while ((n > 0) && (y < n));   // test-expr
+    
+    return x;
+}
+
+
+// x at %ebp+8, y at %ebp+12, n at %ebp+16
+    movl 8(%ebp), %eax      // Put argument value to register
+    movl 12(%ebp), %ecx
+    movl 16(%ebp), %edx
+.L2:
+    addl %edx, %eax         // body-statement start, x += n
+    imull %edx, %ecx        // y *= n
+    subl $1, %edx           // body-statement end, ++n
+    testl %edx, %edx        // test-expr, check whether n <= 0
+    jle .L5
+    cmpl %edx, %ecx         // test-expr, check whether y < n
+    jl .L2
+.L5
+            // return x
+
+A:
+Register        Variable        Initally
+%eax            x               Argument value
+%ecx            y               Argument value
+%edx            n               Argument value
+
+
+    2020-12-10 看到232页
 
