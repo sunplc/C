@@ -305,6 +305,28 @@ int fun_a(unsigned x) {
 
 3.23:
 
+A:
+
+int fun_b(unsigned x) {
+    int val = 0;
+    int i;
+    for (i = 0; i != 32; i++) {
+        val = (val <<= 1) | (x & 1)
+        x >>= 1;
+    }
+    return val;
+}
+
+B:
+
+This function reverse x's bits, transform lower bits to higher bits.
+
+
+3.25:
+
+A: (31 - 16) * 2 = 30
+B: (16 + 30) = 46
+
 
 
 2020-12-10 看到240页
