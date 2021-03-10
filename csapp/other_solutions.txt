@@ -328,6 +328,64 @@ A: (31 - 16) * 2 = 30
 B: (16 + 30) = 46
 
 
+从switch语句这一节，开始看 CSAPP-3e
 
-2020-12-10 看到240页
+
+3.30:
+A: The value of case lable is the address of block that start with case label.
+B: .L2 .L5 and .L7
+
+3.31:
+void switcher(long a, long b, long c, long *dest)
+{
+    long val;
+    switch(a) {
+    case 5: /* Case A */
+        c = a ^ 15;
+        /* Fall through */
+
+    case 0: /* Case B */
+        val = c + 112;
+        break;
+
+    case 7: /* Case C */
+    case 2: /* Case D */
+        val = (a + c) * 4;
+        break;
+
+    case 4: /* Case E */
+        val = b;
+        break;
+
+    default:
+        val = a;
+    }
+    *dest = val;
+}
+
+
+3.33:
+(int a, char b, long *u, char *v)
+
+3.34:
+A: a0 ~ a6
+B: a7, a8
+C: Because there are only six callee-saved registers, and 
+    the number of local values may exceed six.
+
+3.35:
+
+
+A: the value of parameter x
+
+B:
+long rfun(unsigned long x) {
+    if (x = 0)
+        return 0;
+    unsigned long nx = x / 4;
+    long rx = rfun(nx);
+    return x + nx;
+}
+
+2021-03-09 看到275页
 
