@@ -387,5 +387,149 @@ long rfun(unsigned long x) {
     return x + nx;
 }
 
-2021-03-09 看到275页
+3.36:
+Array   Element size    Total size  Start address   Element i
+P       4               20          XP              Xp + 4 * i
+Q       2               4           XQ              Xq + 2 * i
+R       8               72          XR              Xr + 8 * i
+S       8               80          XS              Xs + 8 * i
+T       8               16          Xt              XT + 8 * i
+
+3.37:
+address of P in rdx, value of i in rcx.
+
+Expression  Type        Value                   Assembly code
+P[1]        short       M[Xp + 2i]              movw (%rdx, %rcx, 2), %ax
+P + 3 + i   short *     Xp + 6 + 2i             leaq 6(%rdx, %rcx, 2), %rax
+P[i*6 - 5]  short       M[Xp + 12i - 10]        movw -10(%rdx, %rcx, 12), %ax
+P[2]        short       M[Xp + 4]               movw 4(%rdx), %ax
+&P[i + 2]   short *     Xp + 2i + 4             leaq 4(%rdx, %rcx, 2), %rax
+
+3.38:
+From the assembly code, we can get follow result:
+P[i][j] = XP + 8 * (7i + j)
+Q[j][i] = XQ + 8 * (5j + i)
+
+And because of 
+P[i][j] = XP + 8 * (i*M + j)
+Q[j][i] = XQ + 8 * (j*N + i)
+
+So we get:
+M is 7, and N is 5.
+
+3.39:
+From question, we have:
+C = R = N = 16
+
+Aptr = &A[i][0] = XA + 4(C*i + 0) = XA + 64i
+Bptr = &B[0][k] = XB + 4(C*0 + k) = XB + 4k
+Bend = &B[N][K] = XB + 4(C*N + k) = XB + 4*16*16 + 4*k = XB + 1024 + 4k
+
+3.40:
+solution in 3.40.c file.
+
+3.41:
+A: 
+P       0
+s.x     8
+s.y     10
+next    12
+
+B:
+20
+
+C:
+void st_init(struct test *st) {
+    st->s.y = st->s.x;
+    st->p   = &(st->s.y)
+    st->next= st
+}
+
+3.42:
+A:
+short test(struct ACE *ptr) {
+    short i = 1;
+
+    do {
+        i *= ptr->v;
+        ptr = ptr->p;
+    } while (ptr);
+
+    return i;
+}
+
+B:
+ACE has a short intger 'v' and a pointer 'p' which pointed to
+another ACE.
+function test compute the product of ACE's v and check the ACE's
+pointer p, if p not NULL, go to next ACE and compute the product,
+and so on.
+
+
+3.43:
+expr        type    Code
+up->t1.v    short   movw 8(%rdi), %ax
+                    movw %ax, (%rsi)
+
+&up->t1.w   char*   leaq 10(%rdi), %rax
+                    movq %rax, (%rsi)
+
+up->t2.a    array   leaq 12(%rdi), %rax
+                    movq %rax, (%rsi)
+
+up->t2.a[up->t1.u]    int   
+                    movq (%rdi), %rcx
+                    movl 12(%rdi, %rcx, 4), %eax
+                    movl %rax, (%rsi)
+
+*up->t2.p   char    movq 20(%rdi), %rax
+                    movb (%rax), %cl
+                    movb %cl, (%rsi)
+
+3.44:
+A: offset: 0, 4, 8, 16; total size: 24; 
+start address of structure is multiply of 8
+
+B: offset: 0, 8, 16, 24; total size: 32; 
+start address of structure is multiply of 8
+
+C: offset: 0, 8; total size 24;
+start address of structure is multiply of 8
+
+D: offset: 0, 16; total size 32;
+start address of structure is multiply of 8
+
+E: offset: 0, 64; total size 88;
+start address of structure is multiply of 8
+
+3.45:
+struct {
+    int *a;
+    float b;
+    char c;
+    short d;
+    long e;
+    double f;
+    int g;
+    char *h;
+} rec
+
+A: offset: 0, 8, 12, 14, 16, 24, 32, 40
+B: total size is 48 bytes
+C: 
+struct {
+    int *a;
+    long e;
+    double f;
+    char *h;
+    float b;
+    int g;
+    short d;
+    char c;
+} rec
+offset: 0, 8, 16, 24, 32, 36, 40, 42; total size is 43;
+
+2021-03-09 看到295页
+2021-03-19 看到301页
+2021-03-20 看到312页
 
