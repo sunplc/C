@@ -555,10 +555,57 @@ E:
 1. strlen(buf) should be sizeof(buf)
 2. strcpy(result, buf) should by strncpy(result, buf, 4)
 
+3.47:
+A: 0xffffd754 - 0xffffb754 == 0x200, that is 512 in decimal.
+
+B: 512 / 128 == 4, four times attempt would take
+
+
+3.48:
+A:
+Without protector version:
+buf in %rsp
+v in %rsp + 24
+
+With protector version:
+buf in %rsp + 16
+v in %rsp + 8
+canary value in %rsp + 40
+
+B:
+After rearrange order, canary value is just behind buffer 'buf',
+that can provent buffer overrun corrupt any other things,
+like 'v'.
+
+3.49:
+A: 
+%rax = (8 * n + 22);
+%rax = %rax - %rax % 16;
+s2 = %rsp - %rax;
+
+the value of allocate space is minimium 16, and is multiply of 16,
+accordding to the amount of n;
+
+B:
+%rax = %rsp + 7;
+%rax = %rax / 8;
+p = %rax * 8;
+
+make the address of array p incremented to an address of multiply of 8
+
+C:
+n   s1      s2      p       e1      e2
+5   2065    2017    2024    1       7
+6   2064    2000    2000    16      0
+
+D:
+s2 is %rsp subtract allocate spaces which is multiply of 16 and minimium is 16,
+p is the address of array p, is multiply of 8. alignmented data
 
 
 2021-03-09 看到295页
 2021-03-19 看到301页
 2021-03-20 看到312页
-2021-03-21 看到321页
+2021-03-21 看到328页
+2021-03-24 看到330页
 
