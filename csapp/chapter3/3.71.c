@@ -17,8 +17,8 @@ and return when one is encountered.
 
 void good_echo(void)
 {
-    size_t len = SIZE;      // the length of buf
-    char *buf = malloc(len);// buffer that used to store input line
+    size_t len = SIZE;          // the length of buf
+    char *buf = malloc(len);    // buffer that used to store input line
 
     ssize_t n = 0, read_count = 0, write_count = 0;
 
@@ -35,6 +35,7 @@ void good_echo(void)
 
             if (buf == NULL) {
                 perror("realloc failed:");
+                break;
             }
 
         } else {
@@ -46,7 +47,8 @@ void good_echo(void)
 
     write_count = write(STDOUT_FILENO, buf, read_count);
 
-    printf("\n\nlength of read is %ld, length of write is %ld\n", read_count, write_count);
+    printf("\n\nlength of read is %ld, length of write is %ld\n", 
+            read_count, write_count);
 }
 
 int main(void)
