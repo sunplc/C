@@ -653,6 +653,101 @@ since bias = 1023, so exponent = 1028 - 1023 = 5
 3.56:
 不会做
 
+3.65:
+A: %rdx
+B: %rax
+C: M = 120/8 = 15
+
+3.66:
+if 3n <= 0
+    return 0
+
+r8 =  8(4*n + 1)
+rcx = A + 8*j
+rax = rdx = 0
+
+while (rdx != 3*n) {
+    rax += (rcx)
+    rdx += 1
+    rcx += r8
+}
+return rax
+
+#define NR 3 *
+#define NC 1 + 4 *
+
+3.67:
+A:
+E:
+
+Address:     Content:
+%rsp+104     |  |
+%rsp+96      |  |
+%rsp+88      |  |
+%rsp+80      | r.q |
+%rsp+72      | r.u[1] |
+%rsp+64      | r.u[0] |
+%rsp+48      |  |
+%rsp+40      |  |
+%rsp+32      |  |
+%rsp+24      | z |
+%rsp+16      | &z |
+%rsp+8       | y |
+%rsp         | x |
+
+B:
+64(%rsp) in %rdi
+structure {x, y, &z} at the beginning of %rsp
+
+C:
+function process will execute 'push %rbp',
+and then argument s is at the %rsp+8
+
+D:
+the address of result is in %rdi,
+funtion process set the values to structure at %rdi
+
+F:
+arguments is store in stack space, and return result is passed by pointer
+which stored in register, allocated by caller.
+
+3.68:
+8
+32
+184
+
+from q->t at %rsi+8, we get:
+4 < B <=8
+from q->u at %rsi+32, we get:
+12 < 2*A <= 20
+that is:
+6 < A <= 10
+
+from p->y at %rdi+184, So we can get:
+4*A*B = 184
+that is:
+A*B = 48
+
+So, we get:
+B is 6, A is 8
+
+3.70:
+A:
+e1.p    0
+e1.y    8
+e2.x    0
+e2.next 8
+
+B:
+16 bytes
+
+C:
+void proc(union ele *up) {
+    up->x = *(up->e2.next->e1.p) - up->e2.next->e1.y;
+}
+
+使用 gcc -S -O1 3.70.c 得到 3.70.s 来验证
+
 
 2021-03-09 看到295页
 2021-03-19 看到301页
@@ -661,4 +756,6 @@ since bias = 1023, so exponent = 1028 - 1023 = 5
 2021-03-24 看到333页
 2021-04-01 看到342页
 2021-04-02 看到348页
+2021-04-07 看到350页
+2021-04-08 看到358页
 
