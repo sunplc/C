@@ -748,6 +748,37 @@ void proc(union ele *up) {
 
 使用 gcc -S -O1 3.70.c 得到 3.70.s 来验证
 
+3.72:
+A: 
+s2 = %rsp - ( (30 + 8*n) / 16 * 16 )
+
+B:
+p = (%rsp + 15) / 16 * 16
+
+C:
+s2 = s1 + (30 + 8*n) / 16 * 16
+
+n   allocated space     s1 % 16   e1    e2
+1   32                  1         8     15
+2   32                  1         0     15
+1   32                  0         24    0
+2   32                  0         16    0
+
+so when s1 % 16 equal2 1 and n is even number, e1 have minimum value is 0,
+and when s1 % 16 equals 0 and n is odd number, e1 have maximum value is 24.
+
+D:
+make sure s2 - s1 minimal 32 bytes, and have at least 15 bytes free space for
+alignment
+
+make sure the address of p is the multiply of 16
+
+3.75:
+A:
+first argument in %xmm0 and %xmm1, second argument in %xmm2 and %xmm3, and so on
+B:
+return value in %xmm0 and %xmm1
+
 
 2021-03-09 看到295页
 2021-03-19 看到301页
@@ -758,4 +789,7 @@ void proc(union ele *up) {
 2021-04-02 看到348页
 2021-04-07 看到350页
 2021-04-08 看到358页
+2021-04-09 看到361页
+2021-04-11 看到362页
+
 
