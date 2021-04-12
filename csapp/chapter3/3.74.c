@@ -1,7 +1,7 @@
 
 /*
  * 将 汇编代码文件 与 c文件 一起编译
- * gcc 3.73.c 3.73.s -o 3.73.out
+ * gcc 3.74.c 3.74.s -o 3.74.out
  *
  */
 #include <stdio.h>
