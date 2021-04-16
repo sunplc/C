@@ -118,7 +118,7 @@ void decode1(int *xp, int *yp, int *zp)
 x+6
 x+y
 x+(y*4)
-x+(y*8)+7
+7+ 9y
 (y*4)+10
 x+(y*2)+9
 
@@ -131,8 +131,8 @@ x+(y*2)+9
 %eax    0xFD
 
 3.8:
-SHL $2, %eax 
-SAR %ecx, %eax
+sall $2, %eax 
+sarl %cl, %eax
 
 3.9:
 t1 = x ^ y;
@@ -222,7 +222,7 @@ done:
 }
 
 B:
-The reson is Less operation , less instruction, less time, such as if (!test-expr) is one
+The reason is Less operation , less instruction, less time, such as if (!test-expr) is one
 more operation than if (test-expr).
 
 3.18:
@@ -231,12 +231,13 @@ int test(int x, int y) {
     int val = x * y;
     if (x >= -3) {
         if (x > 2) {
-            x = y - x;
+            val = y - x;
         } else {
-            x = y ^ x;
+            val = y ^ x;
         }
     } else if (x <= y)
         val = x + y;
+    return val;
 }
 
 3.20:
@@ -293,7 +294,7 @@ int loop_while(int a, int b) {
 
 int fun_a(unsigned x) {
     int val = 0;
-    while(a) {
+    while(x) {
         val ^= x;
         x >>= 1;
     }
@@ -384,7 +385,7 @@ long rfun(unsigned long x) {
         return 0;
     unsigned long nx = x / 4;
     long rx = rfun(nx);
-    return x + nx;
+    return x + rx;
 }
 
 3.36:
@@ -527,7 +528,7 @@ struct {
     short d;
     char c;
 } rec
-offset: 0, 8, 16, 24, 32, 36, 40, 42; total size is 43;
+offset: 0, 8, 16, 24, 32, 36, 40, 42; total size is 48;
 
 3.46:
 A:
@@ -610,7 +611,7 @@ val3 => l
 val4 => f
 
 3.51:
-long    double  vcvtsi2sdq  %rdi, %xmm0
+long    double  vcvtsi2sdq  %rdi, %xmm0, %xmm0
 double  int     vcvttsd2si  %xmm0, %eax
 double  float   vmovddup    %xmm0, %xmm0
                 vcvtpd2psx  %xmm0, %xmm0
@@ -619,8 +620,8 @@ float   long    vcvttss2siq %xmm0, %rdi
 
 3.52:
 A: %xmm0, %rdi, %xmm1, %esi
-B: %edi, %xmm0, %xmm1, %rsi
-C: %xmm0, %xmm1, %edi, %xmm2
+B: %edi, %rsi, %rdx, %rcx
+C: %rdi, %xmm0, %esi, %xmm1
 D: %xmm0, %rdi, %xmm1, %xmm2
 
 3.53:
