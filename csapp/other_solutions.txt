@@ -780,6 +780,181 @@ first argument in %xmm0 and %xmm1, second argument in %xmm2 and %xmm3, and so on
 B:
 return value in %xmm0 and %xmm1
 
+Chapter 4:
+
+4.1:
+
+
+Chapter 4:
+
+4.1:
+.pos 0x100                  # Start code at address 0x100
+    irmovq $15,%rbx         # 10 bytes long     # 30 f3 0f00000000000000
+    rrmovq %rbx,%rcx        # 2 bytes long.     # 20 31
+loop:   # address 0x10c
+    rmmovq %rcx,-3(%rbx)    # 10 bytes long.    # 40 13 fdffffffffffffff
+    addq %rbx,%rcx          # 2 bytes long.     # 60 31
+    jmp loop                # 9 bytes long.     # 70 0c01000000000000
+
+4.2:
+A. 0x100: 30f3fcffffffffffffff 40630008000000000000
+    irmovq $-4, %rbx
+    rmmovq %rsi, 0x0000000000000800(%rbx)
+
+B. 0x200: a06f 800c02000000000000 00 30f30a00000000000000
+    push %rsi
+    call proc
+    halt
+.proc:
+    irmovq $10, %rbx
+
+C. 0x300: 50540700000000000000 10 f0 b01f
+    mrmovq 7(%rsp), %rbp
+    nop
+    invalid instruction
+    popq %rcx
+
+D. 0x400: 6113 730004000000000000 00
+.loop:
+    subq %rcx, %rbx
+    je loop
+    halt
+
+E. 0x500: 6362 a0f0
+    xorq %rsi, %rdx
+    pushq (invalid instruction)
+
+
+4.3:
+# Y86-64 code
+# long sum(long *start, long count)
+# start in %rdi, count in %rsi
+
+sum:
+    irmovq $1,%r9
+    xorq %rax,%rax
+    andq %rsi,%rsi 
+    jmp test
+loop
+    mrmovq (%rdi),%r10
+    addq %r10,%rax 
+    iaddq $1,%rdi
+    subq %r9,%rsi
+test:
+    jne
+    ret 
+
+4.7:
+push %rsp will first push the value of %rsp to stack,
+and then decrement %rsp.
+
+4.8:
+pop %rsp will first decrement the %rsp, and then pop
+the value of the original address.
+
+mrmovq (%rsp), %rsp
+
+4.9:
+bool xor = !(a && b) && (a || b)
+
+
+4.10:
+a0 xor b0   =>  x0
+a1 xor b1   =>  x1
+.
+.
+.
+a63 xor b63 =>  x63
+
+x0 || x1 || ... || x63   => x
+!x  =>  Eq
+
+
+4.11:
+word Min3 = [
+    A <= B && B <= C    : A;
+    B <= C              : B;
+    1                   : C;
+];
+
+4.12:
+word Median = [
+    A >= B && A <= C    : A;
+    B < A               : B;
+    1                   : C;
+];
+
+4.13:
+            Generic                 Specific
+Stage       irmovq V, rB            irmovq $128, %rsp
+Fetch       icode :ifun ← M1[PC]    icode:ifun <- M1[PC]
+            rA :rB ← M1[PC + 1]     rA:rB <- M1[PC + 1]
+            valC ← M8[PC + 2]       $128 <- M8[PC + 2]
+            valP ← PC + 10          valP <- PC + 10
+Decode
+Execute     valE ← 0 + valC         valE <- 0 + 128
+Memory
+Write back  R[rB] ← valE            %rsp <- 128
+PC update   PC ← valP               PC <- valP
+
+set %rsp to 128, add 10 to PC
+
+4.14:
+            Generic                 Specific
+Stage       popq rA                 popq %rax
+Fetch       icode :ifun ← M1[PC]    icode:ifun <- M1[0x02c] = b:0
+            rA :rB ← M1[PC + 1]     rA:rB <- M1[0x02d] = 0:f
+            valP ← PC + 2           valP <- 0x02e
+Decode      valA ← R[%rsp]          valA <- R[%rsp] = 136
+            valB ← R[%rsp]          valB <- R[%rsp] = 136
+Execute     valE ← valB + 8         valE <- valB + 8 = 144
+Memory      valM ← M8[valA]         valM <- M8[136] = 9
+Write back  R[%rsp] ← valE          R[%rsp] <- valE = 144
+            R[rA] ← valM            R[%rax] <- valM = 9
+PC update   PC ← valP               PC <- valP = 0x02e
+
+incremented %rsp with 8, poped the value of stack top to %rax,
+incremented PC with 2.
+
+
+Practice Problem 4.15:
+push %rsp will put the value at %rsp to an 8 bytes space below the address of %rsp,
+and decrement %rsp with 8.
+this conform the desired behavior.
+
+Practice Problem 4.16:
+it will pop the value at stack top to the %rsp, overwrite the incremented value.
+this conform the desired behavior.
+
+Practice Problem 4.17:
+Stage       cmovXX rA, rB
+Fetch       icode :ifun ← M1[PC]
+            rA :rB ← M1[PC + 1]
+            valP ← PC + 2
+Decode      valA ← R[rA]
+            valB ← R[rB]
+Execute     Cnd ← Cond(CC, ifun)
+            valE ← 0 + valA
+Memory
+Write back  R[rB] ← Cnd ? valE : valB
+            
+PC update   PC ← valP
+
+Practice Problem 4.18:
+            Generic                 Specific
+Stage       call Dest               call 0x041
+Fetch       icode :ifun ← M1[PC]    icode:ifun <- M1[0x37] = 8:0
+            valC ← M8[PC + 1]       valC <- M8[0x37] = 0x41
+            valP ← PC + 9           valP <- PC + 9 = 0x40
+Decode
+            valB ← R[%rsp]          valB <- R[%rsp] = 128
+Execute     valE ← valB + (−8)      valE <- 128 + (-8) = 120
+Memory      M8[valE] ← valP         M8[120] <- 0x40
+Write back  R[%rsp] ← valE          R[%rsp] <- 120
+PC update   PC ← valC               PC <- valC = 0x41
+
+Practice Proble 4.19:
+bool need_valC = icode in {IIRMOVQ, IRMMOVQ, IMRMOVQ, IJXX, ICALL}
 
 2021-03-09 看到295页
 2021-03-19 看到301页
@@ -792,5 +967,9 @@ return value in %xmm0 and %xmm1
 2021-04-08 看到358页
 2021-04-09 看到361页
 2021-04-11 看到362页
+2021-04-16 看到397页
+2021-04-18 看到407页
+2021-04-19 看到421页
+2021-04-20 看到441页
 
 
