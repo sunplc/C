@@ -799,7 +799,7 @@ loop:   # address 0x10c
 4.2:
 A. 0x100: 30f3fcffffffffffffff 40630008000000000000
     irmovq $-4, %rbx
-    rmmovq %rsi, 0x0000000000000800(%rbx)
+    rmmovq %rsi, 0x800(%rbx)
 
 B. 0x200: a06f 800c02000000000000 00 30f30a00000000000000
     push %rsi
@@ -880,7 +880,9 @@ word Min3 = [
 4.12:
 word Median = [
     A >= B && A <= C    : A;
-    B < A               : B;
+    A >= C && A <= B    : A;
+    B >= A && B <= C    : B;
+    B >= C && B <= A    : B;
     1                   : C;
 ];
 
@@ -932,11 +934,10 @@ Fetch       icode :ifun ← M1[PC]
             rA :rB ← M1[PC + 1]
             valP ← PC + 2
 Decode      valA ← R[rA]
-            valB ← R[rB]
 Execute     Cnd ← Cond(CC, ifun)
             valE ← 0 + valA
 Memory
-Write back  R[rB] ← Cnd ? valE : valB
+Write back  if (Cnd) R[rB] ← valE
             
 PC update   PC ← valP
 
@@ -953,8 +954,56 @@ Memory      M8[valE] ← valP         M8[120] <- 0x40
 Write back  R[%rsp] ← valE          R[%rsp] <- 120
 PC update   PC ← valC               PC <- valC = 0x41
 
-Practice Proble 4.19:
+Practice Problem 4.19:
 bool need_valC = icode in {IIRMOVQ, IRMMOVQ, IMRMOVQ, IJXX, ICALL}
+
+Practice Problem 4.20:
+word srcB = [
+    icode in {IRMMOVQ, IMRMOVQ, IOPQ} : rB;
+    icode in {IPUSHQ, IPOPQ, ICALL, IRET} : RESP;
+    1 : RNONE;
+];
+
+4.21:
+word dstM = [
+    icode in {IMRMOVQ, IPOPQ} : rA;
+    1 : RNONE;
+];
+
+4.22:
+give higher-priority to dstM.
+
+4.23:
+word aluB = [
+    icode in {IRRMOVQ, IIRMOVQ} : 0;
+    icode in {IMRMOVQ, IRMMOVQ, IOPQ, ICALL, IRET, IPUSHQ, IPOPQ} : valB;
+];
+
+4.24:
+word dstE = [
+    icode in {IRRMOVQ} && Cnd : rB;
+    .
+    .
+    .
+];
+
+4.25:
+word mem_data = [
+    icode in {IRMMOVQ, IPUSHQ} : valA;
+    icode == ICALL : valP;
+];
+
+4.26:
+bool mem_write = icode in {IRMMOVQ, IPUSHQ, ICALL};
+
+4.27:
+word Stat = [
+    icode == IHALT : SHLT;
+    imem_error || dmem_error : SADR;
+    !instr_valid : SINS;
+    1 : SAOK;
+];
+
 
 2021-03-09 看到295页
 2021-03-19 看到301页
@@ -971,5 +1020,6 @@ bool need_valC = icode in {IIRMOVQ, IRMMOVQ, IMRMOVQ, IJXX, ICALL}
 2021-04-18 看到407页
 2021-04-19 看到421页
 2021-04-20 看到441页
+2021-04-21 看到447页
 
 
