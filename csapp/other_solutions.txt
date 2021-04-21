@@ -1004,6 +1004,105 @@ word Stat = [
     1 : SAOK;
 ];
 
+毫秒 1 ms = 1 * 10^-3 s
+微秒 1 μs = 1 * 10^-6 s
+纳秒 1 ns = 1 * 10^-9 s
+皮秒 1 ps = 1 * 10^-12 s
+
+4.28:
+A:
+insert into space between C and D;
+Delay = 340ps
+Throughput = 1/190ps * 1000 = 5.26 GIPS
+
+B:
+first register insert between B and C, 
+second register insert between D and E;
+Delay = 360ps
+Throughput = 1/130ps * 1000 = 7.69 GIPS
+
+C:
+A | B C | D | E F |
+Delay = 380ps
+Throughput = 1/110ps * 100 = 9.09 GIPS
+
+D:
+5 stages;
+A|B|C|D|E F|
+Delay = 400ps
+Throughput = 1/100ps * 100 = 10 GIPS
+
+4.29:
+A:
+Delay = 300 + 20k ps
+Throughput = 1000/(300/k + 20)
+B:
+the delay of register, maximum 50 GIPS
+
+
+4.30:
+word f_stat = [
+    imem_error : SADR;
+    !instr_valid : SINS;
+    1 : SAOK;
+];
+
+4.31
+word d_dstE = [
+    icode in {IRRMOVQ, IIRMOVQ, IOPQ} : rB;
+    icode in {IPUSHQ, IPOPQ} : RRSP;
+    1 : RNONE;
+];
+
+4.32:
+word d_valA = [
+    D_icode in { ICALL, IJXX } : D_valP; # Use incremented PC
+    d_srcA == e_dstE : e_valE; # Forward valE from execute
+    d_srcA == M_dstM : m_valM; # Forward valM from memory
+    d_srcA == M_dstE : M_valE; # Forward valE from memory
+    d_srcA == W_dstM : W_valM; # Forward valM from write back
+    d_srcA == W_dstE : W_valE; # Forward valE from write back
+    1 : d_rvalA; # Use value read from register file
+];
+
+    because popq %rsp in line 4 set the M_dstE and M_dstM both to %rsp,
+so the rrmovq %rsp, %rax will select the M_dstM as the forward field,
+so rrmovq will get the value on the memory which pointed by stack pointer as it's value 
+, rather than the value in %rsp.
+
+4.33:
+irmovq $100, %rsp
+popq %rsp
+nop
+nop
+rrmovq %rsp, %rax
+
+4.34:
+word d_valB = [
+    d_srcB == e_dstE : e_valE; # Forward valE from execute
+    d_srcB == M_dstM : m_valM; # Forward valM from memory
+    d_srcB == M_dstE : M_valE; # Forward valE from memory
+    d_srcB == W_dstM : W_valM; # Forward valM from write back
+    d_srcB == W_dstE : W_valE; # Forward valE from write back
+    1 : d_rvalB;
+];
+
+4.35:
+irmovq $1234, %rdx
+xorq %rcx, %rcx
+cmovne %rdx, %rbx
+rrmovq %rbx, %rax
+
+e_dstE is the result of Execute Stage, 
+E_dstE is the result computed by Decode Stage.
+if there is condition move in execute stage, it will get incorrect result
+
+4.36:
+word m_stat = [
+    dmem_error : SADR;
+    1 : M_stat;
+];
+
 
 2021-03-09 看到295页
 2021-03-19 看到301页
@@ -1021,5 +1120,11 @@ word Stat = [
 2021-04-19 看到421页
 2021-04-20 看到441页
 2021-04-21 看到447页
+2021-04-22 看到451页
+2021-04-23 看到473页
+2001-04-24 看到481页
+2001-04-26 看到490页
+2001-04-27 看到492页
+2001-04-27 看到495页
 
 
