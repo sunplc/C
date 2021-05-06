@@ -1104,6 +1104,50 @@ word m_stat = [
 ];
 
 
+4.37:
+
+call func
+
+nop
+nop
+
+func:
+irmovq $3, %rax
+irmovq $4, %rbx
+subq %rax, %rbx
+jg L1
+
+irmovq $0, %rax
+irmovq $0, %rbx
+ret
+halt
+
+L1:
+ret
+
+irmovq $1, %rax
+halt
+
+Combination A will be handled correctly by control logic.
+
+4.38:
+
+call func
+
+nop
+nop
+halt
+
+func:
+
+pushq %rsp
+popq %rsp
+ret
+
+halt
+
+
+
 2021-03-09 看到295页
 2021-03-19 看到301页
 2021-03-20 看到312页
@@ -1126,5 +1170,6 @@ word m_stat = [
 2001-04-26 看到490页
 2001-04-27 看到492页
 2001-04-27 看到495页
+2001-05-06 看到500页
 
 
