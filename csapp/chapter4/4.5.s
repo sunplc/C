@@ -12,7 +12,8 @@ absSum:
     xorq %rax,%rax
     andq %rsi,%rsi 
     jmp test
-loop
+
+loop_start:
     mrmovq (%rdi), %r10
 
     # if *start is negative value,
@@ -26,5 +27,5 @@ add:
     addq %r8,%rdi
     subq %r9,%rsi
 test:
-    jne loop
+    jne loop_start
     ret 

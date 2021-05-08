@@ -1146,6 +1146,56 @@ ret
 
 halt
 
+4.43:
+
+mp 0.2 0.35 2 0.14
+Total penalty 0.25
+CPI = 1.25
+
+movq $0, %rbx
+movq $1, %rax
+
+loop_start:
+addq %rax, %rbx
+
+addq $1, %rax
+
+cmpq $1000, %rax
+jle loop_end
+
+jmp loop_start
+
+loop_end:
+
+
+cmpq $0, %rbx
+jl less_than
+je equal
+
+movq $1, %rax
+jmp branch_end
+
+less_than:
+movq $-1, %rax
+jmp branch_end
+
+equal:
+movq $0, %rax
+
+branch_end:
+
+4.44:
+A:
+8 instructions for conditional branch
+9 instructions for conditional move
+
+B:
+1 load/use bubble and 2 mispredict bubbles for  conditional branch
+1 load/use bubble and 2 mispredict bubbles for  conditional move
+
+C:
+10 clock cycles required for conditional branch
+11 clock cycles required for conditional move
 
 
 2021-03-09 看到295页
@@ -1171,5 +1221,6 @@ halt
 2001-04-27 看到492页
 2001-04-27 看到495页
 2001-05-06 看到500页
+2001-05-07 看到505页
 
 
