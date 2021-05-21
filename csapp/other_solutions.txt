@@ -960,7 +960,7 @@ bool need_valC = icode in {IIRMOVQ, IRMMOVQ, IMRMOVQ, IJXX, ICALL}
 Practice Problem 4.20:
 word srcB = [
     icode in {IRMMOVQ, IMRMOVQ, IOPQ} : rB;
-    icode in {IPUSHQ, IPOPQ, ICALL, IRET} : RESP;
+    icode in {IPUSHQ, IPOPQ, ICALL, IRET} : RRSP;
     1 : RNONE;
 ];
 
@@ -1106,27 +1106,27 @@ word m_stat = [
 
 4.37:
 
-call func
+    call func
 
-nop
-nop
+    nop
+    nop
 
 func:
-irmovq $3, %rax
-irmovq $4, %rbx
-subq %rax, %rbx
-jg L1
+    irmovq $3, %rax
+    irmovq $4, %rbx
+    subq %rax, %rbx
+    jg L1
 
-irmovq $0, %rax
-irmovq $0, %rbx
-ret
-halt
+    irmovq $0, %rax
+    irmovq $0, %rbx
+    ret
+    halt
 
 L1:
-ret
+    ret
 
-irmovq $1, %rax
-halt
+    irmovq $1, %rax
+    halt
 
 Combination A will be handled correctly by control logic.
 
@@ -1197,6 +1197,57 @@ C:
 10 clock cycles required for conditional branch
 11 clock cycles required for conditional move
 
+4.45:
+A:
+no
+
+B:
+movq REG, -8(%rsp)
+subp $8, %rsp
+
+4.46:
+A:
+no
+
+B:
+addq $8, %rsp
+movq -8(%rsp), REG
+
+4.47:
+A:
+4.47.c
+
+B:
+4.47.s 4.47-Y86-64.s
+
+4.48:
+4.48-Y86-64.s
+
+
+4.49:
+4.49-Y86-64.s
+
+
+4.50:
+4.50.s
+
+
+4.51:
+iaddq V, rB
+Fetch   icode:ifun <- M1[PC]
+        f:rB <- M1[PC + 1]
+        valC <- M8[PC + 2]
+        valP <- PC + 10
+Decode  valB <- R[rB]
+Execute valE <- valB + valC
+Memory
+Write back  R[rB] <- valE
+PC update   PC <- valP
+
+
+4.52:
+
+
 
 2021-03-09 看到295页
 2021-03-19 看到301页
@@ -1222,5 +1273,6 @@ C:
 2001-04-27 看到495页
 2001-05-06 看到500页
 2001-05-07 看到505页
+2001-05-17 看到510页
 
 
