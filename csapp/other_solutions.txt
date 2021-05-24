@@ -1246,6 +1246,47 @@ PC update   PC <- valP
 
 
 4.52:
+第四章的练习题4.52及之后的练习题 都没有时间做，以后再补做。
+
+
+
+5.51:
+*xp = 0 And *yp = 0
+
+5.52:
+60 +35n = 136 + 4n
+31n = 76
+n = 2.45
+
+136 + 4n = 157 + 1.25n
+2.75n = 21
+n = 7.64
+
+when n equal or less than 2, version 1 is fastest
+when n equal or less than 7, version 2 is fastest
+when n great than 7, version 3 is fastest
+
+
+5.3:
+A:  1   91  90  90
+B:  91  1   90  90
+C:  1   1   90  90
+
+5.4:
+A: 
+IN O1 version, %xmm0 is read from *dest, and add vec elements to itself in
+iterations.
+IN O2 version, %xmm0 is just add vec elements to itself in iterations.
+
+B:
+optimized version implemented the C code of combine3.
+
+C:
+this optimization preserved the desired behavior. because it write to *dest and
+immidiately read from *dest, so we can omit the read from *dest, replace it with
+temperary variable.
+
+
 
 
 
@@ -1267,12 +1308,12 @@ PC update   PC <- valP
 2021-04-21 看到447页
 2021-04-22 看到451页
 2021-04-23 看到473页
-2001-04-24 看到481页
-2001-04-26 看到490页
-2001-04-27 看到492页
-2001-04-27 看到495页
-2001-05-06 看到500页
-2001-05-07 看到505页
-2001-05-17 看到510页
-
+2021-04-24 看到481页
+2021-04-26 看到490页
+2021-04-27 看到492页
+2021-04-27 看到495页
+2021-05-06 看到500页
+2021-05-07 看到505页
+2021-05-17 看到510页
+2021-05-31 看到560页
 
