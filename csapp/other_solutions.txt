@@ -1286,8 +1286,34 @@ this optimization preserved the desired behavior. because it write to *dest and
 immidiately read from *dest, so we can omit the read from *dest, replace it with
 temperary variable.
 
+5.5:
+A:
+n times additions and 2n times multiplications need to perform
 
+B:
+In our reference machine, the CPU have two float point muliplication function
+units, so the two multiplication and addtion can be performed simultaneously
 
+5.6:
+A:
+n times addtions and n times multiplications need to perform
+
+B:
+C:
+because the addtion operation need the the result of multiplication as it's
+oprand in every iteration, that means the addtion and multiplication operation can not
+be executed simultaneously, so the CPE is Float point multiplication plus Float point
+addtion is 5 + 3 = 8.
+
+5.7:
+solution in 5.7.c
+
+5.8:
+A1 : CPE=15/3=5
+A2 : CPE=10/3=3.33
+A3 : CPE=5/3=1.67
+A4 : CPE=5/3=1.67
+A5 : CPE=10/3=3.33
 
 
 2021-03-09 看到295页
@@ -1316,4 +1342,6 @@ temperary variable.
 2021-05-07 看到505页
 2021-05-17 看到510页
 2021-05-31 看到560页
+2021-06-04 看到565页
+2021-06-17 看到585页
 
