@@ -1315,6 +1315,60 @@ A3 : CPE=5/3=1.67
 A4 : CPE=5/3=1.67
 A5 : CPE=10/3=3.33
 
+5.9:
+solution in 5.9.c
+
+5.10:
+A: in every iteration, it read from next position and write the value to current
+position, so the write operation of next iteration can execute after read
+operation is executed.
+
+B: in every iteration, it read from current position, and write the value to
+next position, so the read position of next iteration can not been executed
+until the current write operation is finished.
+
+C: 
+D: the read and write operations in each iteration is not connected, 
+so theCPE is 0.5, because of there are only two load units.
+
+5.11:
+In every iteraion there are three operations in critical path load add and store,
+the load operation need read from the address which is the write address of
+previous iteration, so the read operation in every iteration must wait until the
+write opreation of previous iteration finished. so the CPE equals the sum of
+latency of load add and store, that's why it's CPE so high.
+
+5.12
+void psum1(float a[], float p[], long n)
+{
+    long i;
+    float tmp;
+
+    p[0] = a[0];
+    tmp = p[0];
+    for (i = 1; i < n; i++) {
+        tmp += a[i];
+        p[i] = tmp;
+    }
+}
+
+5.13:
+A:
+critical path is formed by %xmm0, it have to add the product of two vector
+element in every iteration. instruction vaddsd %xmm1, %xmm0, %xmm0 can not
+be executed parallel over iteration.
+
+B:
+yes
+
+C:
+Latency bound
+
+D:
+the multiplication operations can be executed parallel, so multiplications can
+execute pipelined or executed in multiple Float-point Multiplication units.
+On the contrary, the addition must execute sequentially. so the CPE is equal to
+addition latency.
 
 2021-03-09 看到295页
 2021-03-19 看到301页
@@ -1344,4 +1398,8 @@ A5 : CPE=10/3=3.33
 2021-05-31 看到560页
 2021-06-04 看到565页
 2021-06-17 看到585页
+2021-06-22 看到598页
+2021-06-24 看到604页
+2021-06-25 看到607页
 
+第五章和第六章的最后部分需要重新再读一遍
