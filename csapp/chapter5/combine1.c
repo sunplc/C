@@ -24,6 +24,7 @@ int main()
     data_t tmp;
     data_t *dest = &tmp;
     long len = 12000000;
+
     vec_ptr p = new_vec(len);
     combine1(p, dest);
 

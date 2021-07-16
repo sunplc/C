@@ -1359,6 +1359,7 @@ element in every iteration. instruction vaddsd %xmm1, %xmm0, %xmm0 can not
 be executed parallel over iteration.
 
 B:
+Latency bound
 yes
 
 C:
@@ -1369,6 +1370,15 @@ the multiplication operations can be executed parallel, so multiplications can
 execute pipelined or executed in multiple Float-point Multiplication units.
 On the contrary, the addition must execute sequentially. so the CPE is equal to
 addition latency.
+
+5.14:
+A:
+because the add operation in critical path have to executed one by one
+sequentially, and for any data type the minimum issue time is 1. so the CPE of can't less than 1
+
+B:
+same as question A, the add operations must executed sequentially, can not 
+executed parallelly.
 
 2021-03-09 看到295页
 2021-03-19 看到301页
@@ -1402,4 +1412,4 @@ addition latency.
 2021-06-24 看到604页
 2021-06-25 看到607页
 
-第五章和第六章的最后部分需要重新再读一遍
+第四章和第五章的最后部分需要重新再读一遍
