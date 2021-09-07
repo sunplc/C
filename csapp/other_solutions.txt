@@ -1380,6 +1380,151 @@ B:
 same as question A, the add operations must executed sequentially, can not 
 executed parallelly.
 
+
+Chapter 6:
+
+SRAM consisted of six transistor, persistent, non sisentivity, consume more
+power, more expensive, faster
+DRAM consisted of a capacitor and a transistor
+    memory modules, 
+DISK: platter surface track sector
+SSD: block page
+
+6.1:
+Organization    r   c   br  bc  max(br, bc)
+16 × 1          16  1   4   1   4
+16 × 4          16  4   4   2   4
+128 × 8         128 8   7   3   7
+512 × 4         512 4   9   2   9
+1,024 × 4       1024    4   10  2   10
+
+6.2:
+3 * 2 * 15000 * 500 * 1024 = 46.08 * 10^9 bytes = 46.08 GB
+
+6.3:
+Tavg seek = 5 ms
+Tavg rotation = 1/2 * 60/12000 RPM * 1000 ms/sec = 2.5 ms
+Tavg transfer = 60/12000 RPM * 1/300 sector/track * 1000 ms/sec ~= 0.017 ms
+
+total = 5 + 2.5 = 7.5 ms
+
+6.4:
+Tavg seek = 6ms
+Tavg rotation = 1/2 * 60/13000 RPM  * 1000 ms/sec ~= 2.3ms
+Tavg transfer = 60/13000 RPM * 1/5000 sector/track * 1000 ms/sec
+
+A: time = Tavg seek = 6ms
+B: time = Tavg seek + Tavg rotation = 8.3ms
+
+6.5
+A: 128 * 10^15 bytes / 470 * 10^6 bytes / (3600 * 24 * 365)  ~= 9 years
+B: 128 * 10^15 / 303 * 10^6 / (3600 * 24 * 365) ~= 13 years
+C: 128 * 10^15 / 20 * 10^9 / 365 ~= 17534 years
+
+6.6:
+about at year 2025
+
+6.7:
+modify the code of line 8 to:  product *= a[i][j][k];
+
+6.8:
+b > c > d
+
+6.12:
+CT CT CT CT CT CT CT CT CI CI CI CO CO
+
+6.13:
+A:
+0 1 1 0 1 0 1 0 1 0 0 1 1
+B:
+0x3
+0x4
+0x6A
+N
+0x--
+
+6.14:
+A:
+0 1 1 0 0 1 0 1 1 0 1 0 0
+B:
+0x0
+0x5
+0x65
+N
+0x--
+
+6.15:
+A:
+0 1 0 1 0 0 0 1 1 0 0 0 1
+B:
+0x1
+0x4
+0x51
+N
+0x--
+
+6.16:
+0x064C, 0x064D, 0x064E, 0x064F
+
+6.17:
+A:
+dst
+m   m
+m   m
+
+src
+m   m
+m   h
+
+B:
+dst
+m   h
+m   h
+
+src
+m   h
+m   h
+
+6.18:
+A: 2048
+B: 512
+C: 8/32 = 0.25
+
+6.19:
+A: 2048
+B: 1024
+C: 1024/2048 = 0.5
+D: 1024
+
+6.20:
+A: 2048
+B: 1536
+C: 3/4 = 0.75
+D: 0.75
+
+Chapter 7:
+
+7.1:
+buf     Y   external    m.o     .data
+bufp0   Y   global      swap.o  .data
+bufp1   Y   global      swap.o  COMMON
+swap    Y   global      swap.o  .text
+temp    N   -           -       STACK
+
+7.2:
+A:
+a: main.1
+b: main.1
+
+B:
+a: ERROR
+b: ERROR
+
+C:
+a: x.2
+B: x.2
+
+
 2021-03-09 看到295页
 2021-03-19 看到301页
 2021-03-20 看到312页
@@ -1413,3 +1558,8 @@ executed parallelly.
 2021-06-25 看到607页
 
 第四章和第五章的最后部分需要重新再读一遍
+
+2021-08-16 看到645页
+2021-08-25 看到667页
+2021-08-26 看到676页
+2021-09-02 看到721页
