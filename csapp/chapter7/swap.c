@@ -1,5 +1,6 @@
 extern int buf[];
 
+
 int *bufp0 = &buf[0];
 int *bufp1;
 
