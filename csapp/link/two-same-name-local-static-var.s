@@ -39,8 +39,11 @@ g:
 	.type	x.1723, @object
 	.size	x.1723, 4
 x.1723:
-	.long	1
-	.local	x.1726
-	.comm	x.1726,4,4
+	.long	13
+	.align 4
+	.type	x.1726, @object
+	.size	x.1726, 4
+x.1726:
+	.long	17
 	.ident	"GCC: (GNU) 4.8.5 20150623 (Red Hat 4.8.5-39)"
 	.section	.note.GNU-stack,"",@progbits

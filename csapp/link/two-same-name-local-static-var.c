@@ -1,12 +1,12 @@
 
 int f()
 {
-    static int x = 1;
+    static int x = 13;
     return x;
 }
 
 int g()
 {
-    static int x;
+    static int x = 17;
     return x;
 }
