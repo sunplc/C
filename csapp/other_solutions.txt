@@ -1524,6 +1524,19 @@ C:
 a: x.2
 B: x.2
 
+7.3:
+A: gcc -static p.o libx.a
+B: gcc -static p.o libx.a liby.a
+C: gcc -static p.o libx.a liby.a libx.a
+
+7.4:
+A: 0x4004df
+B: 0x5
+
+7.5:
+ ADDR(r.symbol) + r.addend - (ADDR(s) + r.offset)
+=0x4004e8 + (-0x4) - (0x4004d0 + 0xa)
+=0xa
 
 2021-03-09 看到295页
 2021-03-19 看到301页
@@ -1564,3 +1577,4 @@ B: x.2
 2021-08-26 看到676页
 2021-09-02 看到721页
 2021-09-27 看到725页
+2021-09-27 看到734页
