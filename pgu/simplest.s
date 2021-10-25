@@ -8,12 +8,14 @@
 
 _start:
 
-    # 使用 int 退出程序
+    # 使用 int 退出程序 
+    # 0x80 = 128 = Linux system call
     # movl $1, %eax
     # movl $123, %ebx
-    # int $0x80
+    # int $0x80     # int 0x80 on Linux always invokes the 32-bit ABI
+
 
     # 使用 syscall 退出程序
-    movl $60, %eax
+    movl $60, %eax  # _exit() is system call 60
     movl $123, %edi
     syscall
