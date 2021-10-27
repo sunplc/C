@@ -1573,9 +1573,13 @@ Stop
 Stop
 
 8.5:
-unsigned int Sleep(unsigned int secs)
+unsigned int wakeup(unsigned int secs)
 {
-    return wakeup(secs);
+    unsigned int remain = sleep(secs);
+    if (remain > 0) {
+        printf("Woke up at %d secs.\n", secs - remain);
+    }
+    return remain;
 }
 
 2021-03-09 看到295页
