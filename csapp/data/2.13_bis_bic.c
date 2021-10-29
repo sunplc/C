@@ -14,6 +14,7 @@ void binary_print(int x)
 		x = x >> 1;
 	}
 
+    printf("0b");
 	for (i = len; i > 0; i--) {
 		if (i < len && i % 8 == 0)
 			putchar(' ');
@@ -23,11 +24,13 @@ void binary_print(int x)
 	putchar('\n');
 }
 
+// bit set
 int bis(int x, int y)
 {
     return x | y;
 }
 
+// bit clear
 int bic(int x, int y)
 {
     return x & (~y);

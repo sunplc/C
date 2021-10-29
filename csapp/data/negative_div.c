@@ -3,9 +3,10 @@
 
 int main(int argc, char* argv[]) {
 
-    int i = -5;
+    int i = -25;
+    int d = i / 10;
     int r = i % 10;
-    printf("r = %d\n", r);
+    printf("d = %d, r = %d\n", d, r);
 
 }
 
