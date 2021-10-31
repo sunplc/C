@@ -1585,6 +1585,65 @@ unsigned int wakeup(unsigned int secs)
 8.8:
 213
 
+8.9:
+AB N
+AC Y
+AD Y
+BC Y
+BD Y
+CD Y
+
+8.10:
+A. Called once, returns only if there is an error
+    execve
+
+B. Called once, returns nothing
+
+C. Called once, returns either a pointer or NULL
+    getenv
+
+8.11:
+8 times
+
+8.12:
+10 times
+
+8.13:
+a=4
+a=5
+a=6
+
+8.14:
+4 times
+
+8.15:
+9 times
+
+8.16:
+counter=2
+
+8.17
+Totally 14 different patterns of output lines
+
+8.18:
+A C E
+
+8.19:
+8 lines
+
+8.21:
+abc
+bac
+
+8.23:
+After first SIGUSR2 signal arrived parent process, parent received 
+the signal, called the handler and the system blocked signal 
+of type SIGUSR2, meanwhile the other four signal behind arrived
+parent and not queued, only the second SIGUSR2 signal recorded.
+
+
+
+
 2021-03-09 看到295页
 2021-03-19 看到301页
 2021-03-20 看到312页
@@ -1616,9 +1675,6 @@ unsigned int wakeup(unsigned int secs)
 2021-06-22 看到598页
 2021-06-24 看到604页
 2021-06-25 看到607页
-
-第四章和第五章的最后部分需要重新再读一遍
-
 2021-08-16 看到645页
 2021-08-25 看到667页
 2021-08-26 看到676页
@@ -1627,3 +1683,7 @@ unsigned int wakeup(unsigned int secs)
 2021-09-27 看到734页
 2021-10-20 看到751页
 2021-10-25 看到800页
+
+第四章和第五章的最后部分需要重新再读一遍
+第七章的家庭作业题目 没有做
+

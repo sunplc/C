@@ -7,9 +7,9 @@
 unsigned int wakeup(unsigned int secs)
 {
     unsigned int remain = sleep(secs);
-    if (remain > 0) {
-        printf("Slept for %d of %d secs.\n", secs - remain, secs);
-    }
+
+    printf("Slept for %d of %d secs.\n", secs - remain, secs);
+
     return remain;
 }
 
@@ -20,17 +20,13 @@ void sigint_handler(int sig)
 
 int main(int argc, char *argv[])
 {
-    unsigned int secs;
-    char * arg2;
-
-    if (argc >= 2) {
-        arg2 = argv[1];
-        secs = atoi(arg2);
-        if (secs > 0) {
-            printf("sleep %d seconds...\n", secs);
-
-            signal(SIGINT, sigint_handler);
-            wakeup(secs);
-        }
+    if (argc != 2) {
+        fprintf(stderr, "usage: %s <secs>\n", argv[0]);
+        exit(0);
     }
+
+    signal(SIGINT, sigint_handler);
+    wakeup(atoi(argv[1]));
+
+    return 0;
 }
