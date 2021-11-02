@@ -27,14 +27,15 @@ char *job_state_name[] = {
     "Terminated"
 };
 
-struct job {
+typedef struct {
     char *cmdline;
     int pid;
     int jid; /* job id */
     job_state state;
-};
+    char fbg; /* 0 for foreground, 1 for background */
+} job;
 
-struct job jobs[MAXJOBS];
+job jobs[MAXJOBS];
 
 
 /* foregroud process group id */
@@ -46,10 +47,12 @@ int parseline(char *buf, char **argv);
 int builtin_command(char **argv); 
 
 void show_jobs();
-void add_job(const char *cmdline, int pid, job_state state);
+void add_job(const char *cmdline, int pid, job_state state, char fbg);
 void remove_job(int pid);
 void change_job_state(int pid, job_state state);
+void change_job_fbg(int pid, char fbg);
 int get_pid_by_jid(int jid);
+int job_exist(int pid);
 
 // Safe printf function
 ssize_t Sio_printf(char *fmt, ...)
@@ -157,8 +160,17 @@ void eval(char *cmdline)
         return;
     }
 
+    sigset_t mask_all, prev;
+
+    // Block all signals
+    Sigfillset(&mask_all);
+    Sigprocmask(SIG_BLOCK, &mask_all, &prev);
+
     /* not builtin command */
     if ((pid = Fork()) == 0) {   /* Child runs user job */
+
+        // Restore previous signals
+        Sigprocmask(SIG_SETMASK, &prev, NULL);
 
         Signal(SIGINT, SIG_DFL);
         Signal(SIGTSTP, SIG_DFL);
@@ -178,24 +190,39 @@ void eval(char *cmdline)
 
     /* Parent waits for foreground job to terminate */
     int status;
-    if (!bg) {
+    if (!bg) {  // foreground
 
         fgid = pid;
+        add_job(cmdline, pid, PS_STOPPED, 0);
 
-        // Waiting for the foreground process to terminates
+        // Restore previous signal actions
+        Sigprocmask(SIG_SETMASK, &prev, NULL);
+
+        // Waiting for the foreground process to terminates or stop
         if (Waitpid(pid, &status, WUNTRACED) > 0) {
+        
             fgid = 0;
-            if (WIFSTOPPED(status) && WSTOPSIG(status) == SIGTSTP) {
 
-                // add process group to backgroud jobs, whose state is Stopped
-                add_job(cmdline, pid, PS_STOPPED);
+            if (WIFEXITED(status)) {
+                remove_job(pid);
+            }
+            // add process group to backgroud jobs, whose state is Stopped
+            else if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT) {
+                remove_job(pid);
+            }
+            else if (WIFSTOPPED(status) && WSTOPSIG(status) == SIGTSTP) {
+                change_job_fbg(pid, 1);
+                change_job_state(pid, PS_STOPPED);
             }
         }
 
-    } else {
+    } else { // background
 
         // add process group to backgroud jobs, whose state is Running
-        add_job(cmdline, pid, PS_RUNNING);
+        add_job(cmdline, pid, PS_RUNNING, 1);
+
+        // Restore previous signal actions
+        Sigprocmask(SIG_SETMASK, &prev, NULL);
     }
 
     return;
@@ -258,7 +285,7 @@ int builtin_command(char **argv)
         if (pid > 0) {
             Kill(pid, SIGCONT);
             fgid = pid;
-            remove_job(pid);
+            change_job_fbg(pid, 0);
         }
 
         return 1;
@@ -313,14 +340,14 @@ void show_jobs()
 {
     int i;
     for (i = 0; i < MAXJOBS; ++i) {
-        if (jobs[i].pid > 0)
+        if (jobs[i].pid > 0 && jobs[i].fbg == 1)
             printf("[%d] %d %s \t %s\n", jobs[i].jid, jobs[i].pid,
                 job_state_name[(int)jobs[i].state], jobs[i].cmdline);
     }
 }
 
 // Add a process group to backgroud jobs
-void add_job(const char *cmdline, int pid, job_state state)
+void add_job(const char *cmdline, int pid, job_state state, char fbg)
 {
     // seek a empty entry in array
     int i, empty_index = -1;
@@ -344,14 +371,20 @@ void add_job(const char *cmdline, int pid, job_state state)
     if (cmdline_copy[size-1] == '\n')
         cmdline_copy[size-1] = '\0';
 
-    /* put relate info in job structure */
-    jobs[empty_index].cmdline = cmdline_copy;
-    jobs[empty_index].pid = pid;
-    jobs[empty_index].jid = empty_index + 1;
-    jobs[empty_index].state = state;
+    job j = {
+            cmdline_copy,
+            pid,
+            empty_index + 1,
+            state,
+            fbg
+    };
+
+    jobs[empty_index] = j;
+    
 
     /* print backgroud process group info */
-    printf("[%d] %d %s\n", empty_index + 1, pid, cmdline_copy);
+    if (fbg)
+        printf("[%d] %d %s\n", empty_index + 1, pid, cmdline_copy);
 
     ++empty_index;
 }
@@ -366,6 +399,21 @@ void change_job_state(int pid, job_state state)
     for (i = 0; i < MAXJOBS; ++i) {
         if (jobs[i].pid == pid) {
             jobs[i].state = state;
+            break;
+        }
+    }
+}
+
+// Modify job's foreground or background
+void change_job_fbg(int pid, char fbg)
+{
+    if (pid <= 0)
+        return;
+
+    int i;
+    for (i = 0; i < MAXJOBS; ++i) {
+        if (jobs[i].pid == pid) {
+            jobs[i].fbg = fbg;
             break;
         }
     }
@@ -386,6 +434,8 @@ void remove_job(int pid)
             jobs[i].cmdline = NULL;
             jobs[i].pid = 0;
             jobs[i].jid = 0;
+            jobs[i].state = PS_TERMINATED;
+            jobs[i].fbg = 0;
 
             break;
         }
@@ -400,6 +450,21 @@ int get_pid_by_jid(int jid)
     for (i = 0; i < MAXJOBS; ++i) {
         if (jobs[i].jid == jid) {
             return jobs[i].pid;
+        }
+    }
+
+    return 0;
+}
+
+int job_exist(int pid)
+{
+    if (pid <= 0)
+        return 0;
+
+    int i;
+    for (i = 0; i < MAXJOBS; ++i) {
+        if (jobs[i].pid == pid) {
+            return 1;
         }
     }
 

@@ -13,9 +13,11 @@ int main()
     for (i = 0; i < 20; i+=2)
     {
         for (k = 0; k < (20 - i)/2; ++k)
-        printf(" ");
+            printf(" ");
+
         for (j = 0; j <= i; ++j)
             printf("*");
+
         printf("\n");
     }
 }
