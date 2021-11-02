@@ -29,8 +29,7 @@ int main()
         } else if (WIFSIGNALED(status)) {
             int sig = WTERMSIG(status);
             char msg[100];
-            sprintf(msg, "child %d terminated by signal %d",
-                    pid, sig);
+            sprintf(msg, "child %d terminated by signal %d", pid, sig);
             psignal(sig, msg);
         } else {
             printf("child %d terminated abnormally\n", pid);
