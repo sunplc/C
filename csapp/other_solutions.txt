@@ -1642,6 +1642,133 @@ of type SIGUSR2, meanwhile the other four signal behind arrived
 parent and not queued, only the second SIGUSR2 signal recorded.
 
 
+Chapter 9:
+
+9.1:
+4   16      65535
+14  2^14    2^14 - 1 = 16K - 1
+24  2^24    2^24 - 1 = 16M - 1
+46  2^46    64T - 1
+54  16P     16P - 1
+
+9.2:
+4
+4
+8
+64
+
+
+9.3:
+10  22  2   22
+11  21  3   21
+12  20  4   20
+13  19  5   19
+
+9.4:
+0x03d7
+
+A: 00 0011 1101 0111
+
+B:
+VPN:    0xF
+TLBI:   0x3
+TLBT:   0x3
+TLB hit:    Y
+Page fault: N
+PPN: 0x0D
+
+C:
+PPN: 0x0D
+PPO: 0x17
+Physical address format:
+0011 0101 0111
+
+D:
+Byte offset:    0x3
+Cache index:    0x5
+Cache tag:      0x0D
+Cache hit:      Y
+Cache byte returned:    0x1D
+
+9.6:
+alignment requirement is double-word (8 bytes),
+the size of header is 4 bytes,
+so result is:
+8 bytes     0x9
+16 bytes    0x11
+16 bytes    0x11
+24 bytes    0x19
+
+9.7:
+12
+8
+16
+8
+
+9.10:
+不同大小类型的空闲块并不能合并，也不能互相分割使用，每种大小类型都对应一个
+固定的链表，因此每种大小类型的链表多次分配然后多次释放后，就会产生大量的空
+闲块，也就是不能为更大大小的分配请求所使用的碎片
+
+9.11
+A:
+00 0010 0111 1100
+
+B:
+VPN     0x9
+TLBI    0x1
+TLBT    0x2
+TLB hit 否
+Page fault    否
+PPN     0x17
+
+C:
+00 0101 1111 1100
+
+D:
+CO  0x0
+CI  0xF
+CT  0x17
+Cache hit   否
+Cached byte -
+
+9.12
+A:
+00 0011 1010 1001
+
+B:
+VPN     0xE
+TLBI    0x2
+TLBT    0x3
+TLB hit 否
+Page fault    否
+PPN     0x11
+
+C:
+00 0100 0110 1001
+
+D:
+CO  0x1
+CI  0xA
+CT  0x11
+Cache hit   否
+Cached byte -
+
+9.13
+A:
+00 0000 0100 0000
+
+B:
+VPN     0x1
+TLBI    0x1
+TLBT    0x0
+TLB hit 否
+Page fault    是
+PPN     -
+
+C:
+
+D:
 
 
 2021-03-09 看到295页
@@ -1684,6 +1811,8 @@ parent and not queued, only the second SIGUSR2 signal recorded.
 2021-10-20 看到751页
 2021-10-25 看到800页
 2021-10-31 看到832页
+2021-11-05 看到854页
+2021-11-07 看到873页
 
 
 第四章和第五章的最后部分需要重新再读一遍
