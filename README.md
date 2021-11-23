@@ -9,4 +9,4 @@
 | csapp | Computer System: A Programmer's Perspective, Second Edition And Third edtion|
 
 # Development Environment:
-x86-64 Linux gcc
+x86_64 Linux gcc
