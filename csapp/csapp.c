@@ -884,9 +884,9 @@ ssize_t rio_readlineb(rio_t *rp, void *usrbuf, size_t maxlen)
             }
         } else if (rc == 0) {
             if (n == 1)
-            return 0; /* EOF, no data read */
+                return 0; /* EOF, no data read */
             else
-            break;    /* EOF, some data was read */
+                break;    /* EOF, some data was read */
         } else
             return -1;	  /* Error */
     }
@@ -1039,7 +1039,7 @@ int open_listenfd(char *port)
     /* Make it a listening socket ready to accept connection requests */
     if (listen(listenfd, LISTENQ) < 0) {
         close(listenfd);
-	return -1;
+        return -1;
     }
     return listenfd;
 }

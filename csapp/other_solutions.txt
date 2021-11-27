@@ -1805,6 +1805,16 @@ Chapter 11:
 0x400c950d
 0xcdbc9217
 
+11.5:
+Because of dup2(connfd, STDOUT_FILENO) redirect the output of standard output
+to the connfd
+
+11.6 ~ 11.13:
+Completed in tiny.c cgi-bin/adder.c
+
+bigfile.tar for 11.13, download the file and cancel downloading before finish,
+to check the EPIPE.
+
 
 2021-03-09 看到295页
 2021-03-19 看到301页
@@ -1855,4 +1865,5 @@ Chapter 11:
 第七章的家庭作业题目 没有做
 第九章的家庭作业9.17～9.20没有做，需要重新读一遍
 第十章 第948页，没有看懂
+第十一章 hton inet 函数没有弄懂，习题11.4不会
 
