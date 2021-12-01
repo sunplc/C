@@ -1814,6 +1814,7 @@ Completed in tiny.c cgi-bin/adder.c
 
 bigfile.tar for 11.13, download the file and cancel downloading before finish,
 to check the EPIPE.
+My_rio_readlineb is created for check EPIPE;
 
 
 2021-03-09 看到295页
