@@ -1816,6 +1816,14 @@ bigfile.tar for 11.13, download the file and cancel downloading before finish,
 to check the EPIPE.
 My_rio_readlineb is created for check EPIPE;
 
+Chapter 12:
+12.9:
+not necessary. although producer and consumer can access buf concurrently, but
+no item of buf can be accessed concurrently.
+not necessary
+not necessary
+
+
 
 2021-03-09 看到295页
 2021-03-19 看到301页
