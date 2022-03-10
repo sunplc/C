@@ -1818,10 +1818,17 @@ My_rio_readlineb is created for check EPIPE;
 
 Chapter 12:
 12.9:
-not necessary. although producer and consumer can access buf concurrently, but
-no item of buf can be accessed concurrently.
+not necessary. although producer and consumer can access sbuf concurrently, but
+no item of sbuf can be accessed concurrently.
 not necessary
 not necessary
+
+12.10:
+when a writer thread release semaphore w, it's execution flow, there can be many writer
+threads and reader threads on waitting list, the operation system can select
+any of writers or readers to execute
+
+
 
 
 
