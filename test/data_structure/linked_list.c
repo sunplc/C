@@ -13,14 +13,14 @@ typedef struct node {
     struct node * next;
 } node_t;
 
-void print_list(node_t * head);
-void push(node_t * head, int val);
-int pop(node_t ** head);
-int mypop(node_t * head);
-void add(node_t ** head, int val);
-int remove_last(node_t * head);
-int remove_by_index(node_t ** head, int n);
-void remove_list(node_t ** head);
+void print_list(node_t *head);
+void push(node_t *head, int val);
+int pop(node_t **head);
+int mypop(node_t *head);
+void add(node_t **head, int val);
+int remove_last(node_t *head);
+int remove_by_index(node_t **head, int n);
+void remove_list(node_t **head);
 
 int main()
 {
@@ -42,24 +42,31 @@ int main()
     printf("the poped value is %d\n", first);
     print_list(head);
     printf("************************************\n");
+
     add(&head, 1);
     int last = remove_last(head);
     printf("the removed last value is %d\n", last);
-    printf("************************************\n");
     remove_by_index(&head, 0);
     print_list(head);
-    remove_list(&head);
+    printf("************************************\n");
+
     printf("************ after remove_list ************\n");
+    remove_list(&head);
     print_list(head);
+    printf("************************************\n");
+
     return 0;
 }
 
 // print the linked list 
 void print_list(node_t * head)
 {
+    puts("LINKED LIST:");
+
     node_t * current = head;
+    int index = 0;
     while (current != NULL) {
-        printf("%d\n", current->val);
+        printf("#%d\t%d\n", index++, current->val);
         current = current->next;
     }
 }
@@ -159,3 +166,4 @@ void remove_list(node_t ** head)
     }
     *head = NULL;
 }
+

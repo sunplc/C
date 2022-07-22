@@ -1,3 +1,15 @@
+/*
+ * 1. A static function is a function that has a scope that is limited to
+ * its object file. 
+ *
+ * 2.  static global variable is a variable that has a scope that is
+ * limited to its object file.
+ *
+ * 3. a static local variable is a local varible in it's nearest scope, and
+ * stored in heap, and will been destroyed until program exit.
+ *
+ *
+ */
 #include <stdio.h>
 
 int ga = 0;
