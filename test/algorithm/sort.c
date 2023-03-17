@@ -7,6 +7,10 @@
 // 循环次数、排序次数
 int loop_times = 0, swap_times = 0;
 
+int min(int a, int b) {
+	return a > b ? b : a;
+}
+
 void swap(int v[], int i, int j)
 {
 	++swap_times;
@@ -25,6 +29,14 @@ void check_arr_sorted(int *arr, int len) {
 		}
 		prev = curr;
 	}
+}
+
+void print_arr(int *arr, int len)
+{
+	int i;
+	for (i = 0; i < len; ++i)
+		printf("%d ", arr[i]);
+	putchar('\n');
 }
 
 //冒泡排序
@@ -150,6 +162,48 @@ void shell_sort(int arr[], int len) {
 		}
 }
 
+/**
+ * Merge sort is a divide-and-conquer algorithm that was invented by John von Neumann in 1945.
+ * Most implementations produce a stable sort, which means that the order of equal elements is the same in the input and output. 
+ * I think the biggest disadvantage of Merge sort is that it need an another array, and must copy that array back to the original array after every iteration.
+ */
+void merge_sort(int arr[], int len) {
+	int copy[len];
+
+	int width, i, left, mid, mid_copy, right, x = 0;
+
+	for (width = 1; width <= len; width <<= 1) {
+		for (i = 0; i < len; i += 2 * width) {
+			x = left = i;
+			mid_copy = mid = min((left + width), len);
+			right = min((mid + width), len);
+			// printf("x = %d, left = %d, mid_copy = %d, mid = %d, right = %d\n", x, left, mid_copy,mid, right);
+
+			while (left < mid_copy && mid < right) {
+				if (arr[left] > arr[mid]) {
+					copy[x++] = arr[mid++];
+				} else {
+					copy[x++] = arr[left++];
+				}
+				++swap_times;
+				++loop_times;
+			}
+			while(left < mid_copy){
+				copy[x++] = arr[left++];
+				++swap_times;
+				++loop_times;
+			}
+			while(mid < right) {
+				copy[x++] = arr[mid++];
+				++swap_times;
+				++loop_times;
+			}
+		}
+
+		// print_arr(copy, len);
+		memcpy(arr, copy, len * sizeof(int)); // 复制数组 copy 到 arr 中
+	}
+}
 
 // 各种排序算法的比较
 // 最快的是 shell_sort
@@ -158,7 +212,7 @@ int main(void)
 	srand(time(NULL));
 	
 	// 数组长度
-	int len = 10000;
+	int len = 1000;
 	printf("array_length = %d \n", len);
 
 	int arr[len], arr0[len];
@@ -177,6 +231,7 @@ int main(void)
 		&select_sort,
 		&quick_sort_wrap,
 		&shell_sort,
+		&merge_sort,
 	};
 
 	char *functions_names[] = {
@@ -185,13 +240,14 @@ int main(void)
 		"select_sort",
 		"quick_sort",
 		"shell_sort",
+		"merge_sort",
 	};
 
-
-	char format[] = "%-30s %-20d %-20d\n";
+	char *format = "%-30s %-20s %-20s\n";
 	printf(format, "Algorithm Name:", "loop_times:", "swap_times:");
+	format = "%-30s %-20d %-20d\n";
 
-	for (i = 0; i < 5; ++i) {
+	for (i = 0; i < 6; ++i) {
 		memcpy(arr, arr0, bytes_of_array); // 复制数组 arr0 到 arr 中
 
 		loop_times = swap_times = 0;
