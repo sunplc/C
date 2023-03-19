@@ -164,8 +164,12 @@ void shell_sort(int arr[], int len) {
 
 /**
  * Merge sort is a divide-and-conquer algorithm that was invented by John von Neumann in 1945.
- * Most implementations produce a stable sort, which means that the order of equal elements is the same in the input and output. 
- * I think the biggest disadvantage of Merge sort is that it need an another array, and must copy that array back to the original array after every iteration.
+ * Most implementations produce a stable sort, which means that the order of equal elements 
+ 	is the same in the input and output. 
+ * I think the biggest disadvantage of Merge sort is that it need an another array, and must 
+ 	copy that array back to the original array after every iteration.
+ 
+ * Worst-case performance: O(nlog n)
  */
 void merge_sort(int arr[], int len) {
 	int copy[len];
